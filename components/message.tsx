@@ -4,7 +4,7 @@ import { useChatContext } from '@/context/chatContext';
 import type { ChatRequestOptions, Message } from 'ai';
 import cx from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
-import { memo, useState, useEffect } from 'react';
+import { memo, useState, } from 'react';
 
 import type { Vote } from '@/lib/db/schema';
 
@@ -26,7 +26,7 @@ import { DocumentPreview } from '@/components/toolUI/document-preview';
 import { MessageReasoning } from './message-reasoning';
 import { BaziDisplay } from './toolUI/natalChart/AstrolabeData';
 import AstrolabeChart from './toolUI/natalChart/AstrolabeChart';
-import { NumerologyInputs } from '@/lib/definitions';
+import type { NumerologyInputs } from '@/lib/definitions';
 
 const PurePreviewMessage = ({
   chatId,
@@ -191,7 +191,7 @@ const PurePreviewMessage = ({
                               {null}
                             </div>
                           );
-                        case 'result':
+                        case 'result': {
                           const inputs = topicInputValues as NumerologyInputs;
                           return (
                             <div key={toolCallId}>
@@ -207,6 +207,7 @@ const PurePreviewMessage = ({
                               <p>Click the button below to view</p>
                             </div>
                           );
+                        }
                       }
                       break;
                     }
