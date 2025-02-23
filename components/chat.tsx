@@ -97,7 +97,7 @@ export function Chat({
         currentTopicInputValues.solarDateStr,
         currentTopicInputValues.timeIndex,
         currentTopicInputValues.gender);
-      let result: ClientToolCallResult;
+      let result;
       switch (toolCall.toolName) {
         case 'getBazi':
           result = astrolabeData.chineseDate;

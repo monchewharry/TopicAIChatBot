@@ -49,16 +49,15 @@ function Question(props: { question: string; setQuestion: any }) {
           </label> */}
           <div className="flex flex-wrap gap-3">
             {todayData.map((value, index) => (
-              <button
-                type="button"
-                key={`${index}-${Math.random()}`}
+              <span
+                key={index}
                 onClick={() => {
                   todayClick(index);
                 }}
                 className="rounded-md border bg-secondary p-2 text-sm text-muted-foreground shadow transition hover:scale-[1.03] dark:border-0 dark:text-foreground/80 dark:shadow-none"
               >
                 {value}
-              </button>
+              </span>
             ))}
           </div>
         </>

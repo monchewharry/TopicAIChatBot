@@ -1,4 +1,5 @@
 import {
+  type Message,
   createDataStreamResponse,
   smoothStream,
   streamText,
