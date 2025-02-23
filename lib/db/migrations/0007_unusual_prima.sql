@@ -1,0 +1,1 @@
+ALTER TABLE "Chat" ALTER COLUMN "topicInputValues" DROP NOT NULL;

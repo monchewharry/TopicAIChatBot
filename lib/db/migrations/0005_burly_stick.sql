@@ -1,0 +1,1 @@
+ALTER TABLE "Chat" ADD COLUMN "topicId" varchar DEFAULT 'topic-numerology' NOT NULL;

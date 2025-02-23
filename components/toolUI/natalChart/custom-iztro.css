@@ -1,0 +1,27 @@
+/* custom-iztro.css override some css from iztro*/
+.iztro-palace-center-item label {
+    color: #e80404;
+}
+
+.iztro-palace-center-item span {
+    color: #000000;
+}
+
+/* Izpalace.css */
+.iztro-palace.focused-palace {
+    background-color: #aab8d3a9;
+}
+
+.iztro-palace.opposite-palace {
+    background-color: #94f73da2;
+}
+
+.iztro-palace.surrounded-palace {
+    background-color: #aff46f57;
+}
+
+/* IzpalaceCenter.css */
+.iztro-copyright {
+    font-size: 0px;
+    color: rgba(0, 0, 0, 0.2);
+}
