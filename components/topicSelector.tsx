@@ -1,5 +1,4 @@
 'use client';
-import { useChatContext } from '@/context/chatContext';
 import { startTransition, useMemo, useOptimistic, useState } from 'react';
 
 import { saveChatTopicAsCookie } from '@/app/(chat)/actions';
@@ -15,7 +14,7 @@ import { chatTopics } from '@/lib/ai/topics';
 import { cn } from '@/lib/utils';
 
 import { CheckCircleFillIcon, ChevronDownIcon } from './icons';
-import { TopicIds } from '@/lib/definitions';
+import type { TopicIds } from '@/lib/definitions';
 
 export function TopicSelector({
     selectedTopicId,
