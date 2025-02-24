@@ -11,19 +11,18 @@ import { guaListEnum, guaBaseArray, guaElementEnum, changeYangEnum, changeYinEnu
 import { Button } from "@/components/ui/button";
 import { ListRestart } from "lucide-react";
 
-
 const AUTO_DELAY = 600;
 function getRandomBoolean(): boolean {
     return Math.random() >= 0.5;
 }
 interface DivinationProps {
     startQuestion: string; // the question that start the divination for
-    onUpdate: (updatedValues: Partial<DivinationInputs>) => void; //expose guaobj to parent
+    onTopicInputUpdate: (updatedValues: Partial<DivinationInputs>) => void; //expose guaobj to parent
 }
 
 export default function Divination({
     startQuestion,
-    onUpdate
+    onTopicInputUpdate
 }: DivinationProps) {
     const guaIndexDataMemo = useMemo(() => guaIndexData, []);
     const guaListDataMemo = useMemo(() => Object.values(guaListEnum), []);
@@ -46,14 +45,15 @@ export default function Divination({
         setFrontList([getRandomBoolean(), getRandomBoolean(), getRandomBoolean()]);
         setRotation(true);
         setCount(count + 1);
-    }, [rotation, count, hexagramList.length])
+    }, [count, rotation, hexagramList.length])
+
     // 自动卜筮
     useEffect(() => {
-        if (rotation || resultObj || count >= 6 || !question) {
+        if (rotation || resultObj || count >= 6) {
             return;
         }
         setTimeout(startClick, AUTO_DELAY);
-    }, [question, rotation, count, resultObj, startClick]);
+    }, [rotation, count, resultObj, startClick]);
 
     useEffect(() => {
         if (!flexRef.current) {
@@ -76,7 +76,7 @@ export default function Divination({
                 JSON.stringify(lastUpdateRef.current.currentHex) !== JSON.stringify(hexagramList) ||
                 JSON.stringify(lastUpdateRef.current.currentGua) !== JSON.stringify(resultObj)
             ) {
-                onUpdate({
+                onTopicInputUpdate({
                     currentHex: hexagramList,
                     currentGua: resultObj,
                     startQuestion: startQuestion
@@ -84,7 +84,7 @@ export default function Divination({
                 lastUpdateRef.current = { currentHex: hexagramList, currentGua: resultObj };
             }
         }
-    }, [resultObj, hexagramList, startQuestion, onUpdate]);
+    }, [resultObj, hexagramList, startQuestion, onTopicInputUpdate]);
 
     function onTransitionEnd() {
         setRotation(false);
@@ -111,7 +111,7 @@ export default function Divination({
     function restartClick() {
         setResultObj(null);
         setHexagramList([]);
-        setQuestion("");
+        // setQuestion("");
         setCount(0);
         stop();
     }
@@ -165,7 +165,7 @@ export default function Divination({
     }
 
     const showResult = resultObj !== null;
-    const inputQuestion = question === "";
+    const inputQuestion = false;
     return (
         <div
             ref={flexRef}

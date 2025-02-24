@@ -182,7 +182,7 @@ export function TopicInput({
                                     icon={<HexagramIcon size={40} />}
                                     label={`${isTopicInputComplete ? '再卜一卦' : '卜一卦'}`}
                                 >
-                                    <Divination startQuestion={startQuestion} onUpdate={handleChange} />
+                                    <Divination startQuestion={startQuestion} onTopicInputUpdate={handleChange} />
                                 </IconModal>
                             </div>
                         </div>
