@@ -177,7 +177,7 @@ export function TopicInput({
                                     }}
                                 />
                             </div>
-                            <div className="grid sm:grid-cols-4 gap-2 w-full mt-2">
+                            <div className="grid sm:grid-cols-4 gap-2 w-full mt-2 ml-2">
                                 <IconModal
                                     icon={<HexagramIcon size={40} />}
                                     label={`${isTopicInputComplete ? '再卜一卦' : '卜一卦'}`}
