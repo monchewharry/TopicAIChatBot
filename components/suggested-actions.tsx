@@ -83,7 +83,7 @@ function getSuggestedActionsByTopic(topicInputs: TopicInputs) {
         {
           title: `${topicInputs.currentGua?.guaResult ?? ""}的含义`,
           label: `${topicInputs.startQuestion ?? ''}`,
-          action: `${topicInputs.currentGua?.guaResult ?? ""}对问题${topicInputs.startQuestion ?? ''}的解读`,
+          action: `${topicInputs.currentGua?.guaResult ?? ""}对问题${topicInputs.startQuestion ?? ''}的解读.`,
         },
         {
           title: 'divination title',

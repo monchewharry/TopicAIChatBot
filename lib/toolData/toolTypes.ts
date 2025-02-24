@@ -93,3 +93,7 @@ export enum changeYinEnum {
     five = "六五",
     six = "上六"
 };
+
+export enum ZhouyiDocSection {
+
+};

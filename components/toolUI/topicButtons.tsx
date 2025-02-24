@@ -1,4 +1,5 @@
 'use client';
+
 import { useChatContext } from '@/context/chatContext';
 import IconModal from '@/components/ui/iconModal';
 import AstrolabeChart from '@/components/toolUI/natalChart/AstrolabeChart';
@@ -8,9 +9,24 @@ import Result from "@/components/toolUI/zhouyi/result";
 import { Squares2X2Icon, Bars4Icon } from '@heroicons/react/24/outline';
 import { HexagramIcon } from '@/components/hexagramIcon';
 import { TopicIds } from '@/lib/definitions';
+import { Markdown } from '../markdown';
+import { useState, useEffect } from 'react';
 
 export function TopicButtons() {
     const { topicInputValues } = useChatContext();
+    const [hexagramMd, setHexagramMd] = useState('');
+    useEffect(() => {
+        if (topicInputValues.topicId !== TopicIds.divination) {
+            return;
+        }
+        fetch(`/zhouyi/${topicInputValues.currentGua?.guaMark}/index.md`)
+            .then((res) => res.text())
+            .then((text) => {
+                const lines = text.split("\n").slice(4).join("\n"); // Skip first 4 lines
+                setHexagramMd(lines);
+            });
+    }, [topicInputValues]);
+
     switch (topicInputValues.topicId) {
         case TopicIds.numerology: {
 
@@ -63,6 +79,15 @@ export function TopicButtons() {
                                     <Result {...topicInputValues.currentGua} />
                                 </div>
                             )}
+                        </div>
+                    </IconModal>
+
+                    <IconModal
+                        icon={<HexagramIcon size={32} />}
+                        label="卦象文档"
+                    >
+                        <div className="flex flex-col max-w-md mx-auto gap-2 text-left">
+                            <Markdown>{hexagramMd}</Markdown>
                         </div>
                     </IconModal>
                 </div>
