@@ -100,7 +100,7 @@ export default function Divination({
             ];
             const newListWithId: Array<HexagramObj> = newList.map((item, index) => ({
                 ...item,
-                id: index
+                id: index + 1
             }));
             setResult(newListWithId);
             return newListWithId;

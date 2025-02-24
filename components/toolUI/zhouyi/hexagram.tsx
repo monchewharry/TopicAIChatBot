@@ -9,7 +9,7 @@ function Hexagram(props: { list: HexagramObj[] }) {
         return (
           <div key={value.id} className="flex flex-col-reverse gap-1.5">
             {value.separate && <div className="h-0.5 sm:h-1" />}
-            <Line change={value.change} yang={value.yang} />
+            <Line change={value.change} yang={value.yang} hexid={value.id} />
           </div>
         );
       })}
@@ -17,11 +17,12 @@ function Hexagram(props: { list: HexagramObj[] }) {
   );
 }
 
-function Line(props: { change: boolean | null; yang: boolean }) {
+function Line(props: { change: boolean | null; yang: boolean; hexid: number }) {
   const changeYang = props.change && props.yang;
   const color = props.change ? "bg-red-400" : "bg-stone-400";
   return (
     <div className="flex h-[24px] w-full animate-[transform-x_0.3s_ease-out] items-center justify-center sm:h-[29px]">
+      <HexId hexid={props.hexid} />
       {props.yang ? (
         <div className={clsx("h-full w-4/5 sm:w-[83%]", color)} />
       ) : (
@@ -34,7 +35,15 @@ function Line(props: { change: boolean | null; yang: boolean }) {
     </div>
   );
 }
-
+function HexId(props: { hexid: number }) {
+  return (
+    <div className="h-0 w-0">
+      <div className="relative -left-2 -top-3">
+        <span className="text-sm text-muted-foreground">{props.hexid}</span>
+      </div>
+    </div>
+  );
+}
 function Change(props: { changeYang: boolean | null }) {
   return (
     <div className="h-0 w-0">
@@ -50,5 +59,7 @@ function Change(props: { changeYang: boolean | null }) {
     </div>
   );
 }
+
+
 
 export default Hexagram;
