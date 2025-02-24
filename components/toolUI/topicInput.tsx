@@ -18,6 +18,7 @@ import IconModal from '@/components/ui/iconModal';
 import Divination from '@/components/toolUI/zhouyi/divination';
 import { birthTimeOptions } from '../../lib/toolData/chineseTimeLabel';
 import { Textarea } from "@/components/ui/textarea";
+import { motion } from 'framer-motion';
 export function TopicInput({
     onInputChange
 }: TopicInputProps
@@ -196,8 +197,17 @@ export function TopicInput({
     };
 
     return (
-        <div className="grid sm:grid-cols-2 lg:flex lg:flex-row gap-2 w-full">
-            {renderInputsForTopic()}
-        </div>
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ delay: 0.05 }}
+            key={"topicinputspanel"}
+            className={'block'}
+        >
+            <div className="flex flex-row justify-center items-center  mb-5">
+                {renderInputsForTopic()}
+            </div>
+        </motion.div>
     );
 }
