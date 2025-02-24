@@ -5,7 +5,7 @@ import type { HexagramObj } from '@/lib/definitions'
 function Hexagram(props: { list: HexagramObj[] }) {
   return (
     <div className="flex h-52 w-56 shrink-0 flex-col-reverse gap-1.5 overflow-hidden rounded-md border bg-secondary py-3 shadow-inner dark:border-0 dark:shadow-none sm:h-60 sm:w-72">
-      {props.list.map((value, index) => {
+      {props.list.map((value, _) => {
         return (
           <div key={value.id} className="flex flex-col-reverse gap-1.5">
             {value.separate && <div className="h-0.5 sm:h-1" />}

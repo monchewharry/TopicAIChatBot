@@ -31,22 +31,6 @@ function Question(props: { question: string; setQuestion: any }) {
     >
       {props.question === "" ? (
         <>
-          {/* <label>您想算点什么？</label>
-          <Textarea
-            ref={inputRef}
-            placeholder="将使用 AI 为您解读"
-            className="resize-none"
-            rows={4}
-          />
-          <div className="flex flex-row-reverse">
-            <Button size="sm" onClick={startClick}>
-              开始
-            </Button>
-          </div>
-
-          <label className="mt-16 underline underline-offset-4">
-            🧐 让我猜猜您算什么东西？
-          </label> */}
           <div className="flex flex-wrap gap-3">
             {todayData.map((value, index) => (
               <button
@@ -63,19 +47,6 @@ function Question(props: { question: string; setQuestion: any }) {
           </div>
         </>
       ) : null}
-
-      {/* {props.question && (
-        <div className="flex truncate rounded-md border bg-secondary p-2 shadow dark:border-0 dark:shadow-none">
-          <Image
-            width={24}
-            height={24}
-            className="mr-2"
-            src="/images/yin-yang.webp"
-            alt="yinyang"
-          />
-          {props.question}
-        </div>
-      )} */}
     </div>
   );
 }

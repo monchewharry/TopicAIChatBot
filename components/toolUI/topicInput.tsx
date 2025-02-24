@@ -29,7 +29,6 @@ export function TopicInput({
     const { topicInputValues, setTopicInputValues } = useChatContext();
 
     const handleChange = (updatedValues: Partial<TopicInputs>) => {
-        // const newTopicInput = { ...topicInputValues, ...updatedValues } as TopicInputs; // Overrides only the fields that are being updated
         setTopicInputValues(prev => ({ ...prev, ...updatedValues } as TopicInputs));
         onInputChange();
     };

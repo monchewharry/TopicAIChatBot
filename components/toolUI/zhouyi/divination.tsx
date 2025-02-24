@@ -7,7 +7,6 @@ import Result from "@/components/toolUI/zhouyi/result";
 import Question from "@/components/toolUI/zhouyi/question";
 import { animateChildren } from "@/lib/animate";
 import guaIndexData from "@/lib/toolData/gua-index.json";
-// import guaListData from "@/lib/toolData/gua-list.json";
 import { guaListEnum, guaBaseArray, guaElementEnum, changeYangEnum, changeYinEnum } from "@/lib/toolData/toolTypes";
 import { Button } from "@/components/ui/button";
 import { ListRestart } from "lucide-react";
@@ -35,8 +34,6 @@ export default function Divination({
 
     const [resultObj, setResultObj] = useState<GuaObj | null>(null);
     const [question, setQuestion] = useState(mode === "NEWGUA" ? "NEWGUA" : "");
-
-    const [resultAi, setResultAi] = useState(false);
 
     const flexRef = useRef<HTMLDivElement>(null);
 
@@ -88,7 +85,7 @@ export default function Divination({
                 lastUpdateRef.current = { currentHex: hexagramList, currentGua: resultObj };
             }
         }
-    }, [resultObj, hexagramList, onUpdate]); // ✅ Prevents unnecessary re-renders
+    }, [resultObj, hexagramList, onUpdate]);
 
     function onTransitionEnd() {
         setRotation(false);
@@ -119,7 +116,6 @@ export default function Divination({
         setResultObj(null);
         setHexagramList([]);
         setQuestion("");
-        setResultAi(false);
         setCount(0);
         stop();
     }
@@ -181,7 +177,7 @@ export default function Divination({
         >
             <Question question={question} setQuestion={setQuestion} />
 
-            {!resultAi && !inputQuestion && (
+            {!inputQuestion && (
                 <Coin
                     onTransitionEnd={onTransitionEnd}
                     frontList={frontList}
@@ -207,7 +203,7 @@ export default function Divination({
                     {showResult && (
                         <div className="flex flex-col justify-around">
                             <Result {...resultObj} />
-                            <div className="flex flex-col gap-2 sm:px-6">
+                            {/* <div className="flex flex-col gap-2 sm:px-6">
                                 <Button
                                     size="sm"
                                     variant="destructive"
@@ -218,7 +214,7 @@ export default function Divination({
                                     重来
                                 </Button>
 
-                            </div>
+                            </div> */}
                         </div>
                     )}
                 </div>
