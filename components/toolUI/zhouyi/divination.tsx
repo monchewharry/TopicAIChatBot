@@ -102,8 +102,12 @@ export default function Divination({
                     separate: list.length === 3,
                 },
             ];
-            setResult(newList);
-            return newList;
+            const newListWithId: Array<HexagramObj> = newList.map((item, index) => ({
+                ...item,
+                id: index
+            }));
+            setResult(newListWithId);
+            return newListWithId;
         });
 
     }

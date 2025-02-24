@@ -39,6 +39,7 @@ export interface HexagramObj {
     change: boolean | null;
     yang: boolean;
     separate: boolean;
+    id: number;
 }
 export interface GuaObj {
     guaTitle: string; // 周易第59卦
