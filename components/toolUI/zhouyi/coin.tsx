@@ -11,7 +11,10 @@ function Coin(props: {
   onTransitionEnd: any;
 }) {
   const [lastFront, setLastFront] = useState(props.frontList);
-
+  const frontListWithId = props.frontList.map((item, index) => ({
+    id: index,
+    value: item,
+  }));
   useEffect(() => {
     if (!props.rotation) {
       return;
@@ -26,10 +29,10 @@ function Coin(props: {
 
   return (
     <div className="flex w-full max-w-md justify-around rounded-md border bg-secondary p-4 shadow dark:border-0 dark:shadow-none sm:p-6">
-      {props.frontList.map((value, index) => (
+      {frontListWithId.map((value, index) => (
         <CoinItem
-          key={`${value}-${index}`} // Unique enough for stable rendering
-          front={value}
+          key={`${value.id}}`} // Unique enough for stable rendering
+          front={value.value}
           lastFront={lastFront[index]}
           rotation={props.rotation}
         />
