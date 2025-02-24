@@ -82,8 +82,8 @@ function getSuggestedActionsByTopic(topicInputs: TopicInputs) {
       return [
         {
           title: `${topicInputs.currentGua?.guaResult ?? ""}的含义`,
-          label: '周易',
-          action: `${topicInputs.currentGua?.guaResult ?? ""}的含义`,
+          label: `${topicInputs.startQuestion ?? ''}`,
+          action: `${topicInputs.currentGua?.guaResult ?? ""}对问题${topicInputs.startQuestion ?? ''}的解读`,
         },
         {
           title: 'divination title',

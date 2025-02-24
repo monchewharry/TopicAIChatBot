@@ -1,6 +1,6 @@
 'use client';
 import { useChatContext } from '@/context/chatContext';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -17,23 +17,37 @@ import { HexagramIcon } from '@/components/hexagramIcon';
 import IconModal from '@/components/ui/iconModal';
 import Divination from '@/components/toolUI/zhouyi/divination';
 import { birthTimeOptions } from '../../lib/toolData/chineseTimeLabel';
-
-
-
+import { Textarea } from "@/components/ui/textarea";
 export function TopicInput({
     onInputChange
 }: TopicInputProps
 ) {
     const [open, setOpen] = useState(false);
+    const [startQuestion, setStartQuestion] = useState<string>("NEWGUA");
     const [genderOpen, setGenderOpen] = useState(false);
-    const { topicInputValues, setTopicInputValues } = useChatContext();
+    const { topicInputValues, setTopicInputValues, isTopicInputComplete } = useChatContext();
 
     const handleChange = (updatedValues: Partial<TopicInputs>) => {
         setTopicInputValues(prev => ({ ...prev, ...updatedValues } as TopicInputs));
         onInputChange();
     };
-
-    const renderInputsForTopic = () => {
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    useEffect(() => {
+        if (textareaRef.current) {
+            adjustHeight();
+        }
+    }, []);
+    const adjustHeight = () => {
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+            textareaRef.current.style.height = `${textareaRef.current.scrollHeight + 2}px`;
+        }
+    };
+    const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setStartQuestion(event.target.value);
+        adjustHeight();
+    };
+    const renderInputsForTopic = (): JSX.Element | null => {
         switch (topicInputValues.topicId) {
             case TopicIds.numerology: {
                 return (
@@ -146,19 +160,31 @@ export function TopicInput({
             case TopicIds.divination: {
                 return (
                     <div className="text-left border rounded-xl px-4 py-3.5 text-sm">
-                        <div className="grid sm:grid-cols-4 gap-2 w-full">
-                            <IconModal
-                                icon={<HexagramIcon size={40} />}
-                                label="卜一卦"
-                            >
-                                <Divination mode={"NEWGUA"} onUpdate={handleChange} />
-                            </IconModal>
-                        </div>
-
-                        <div className="w-full mt-2 text-left">
-                            <span className="text-muted-foreground">
-                                卜筮
-                            </span>
+                        <div className="flex flex-col sm:flex-col lg:flex-row w-auto h-auto justify-start items-start">
+                            <div className="w-full mt-2 text-left">
+                                <Textarea
+                                    ref={textareaRef}
+                                    placeholder="先问问题"
+                                    onChange={handleInput}
+                                    className='min-h-[24px] max-h-[calc(75dvh)] overflow-hidden resize-none rounded-2xl !text-base bg-muted pb-10 dark:border-zinc-700'
+                                    rows={2}
+                                    autoFocus
+                                    onKeyDown={(event) => {
+                                        if (event.key === 'Enter' && !event.shiftKey) {
+                                            event.preventDefault();
+                                            // submitStartQuestion();
+                                        }
+                                    }}
+                                />
+                            </div>
+                            <div className="grid sm:grid-cols-4 gap-2 w-full mt-2">
+                                <IconModal
+                                    icon={<HexagramIcon size={40} />}
+                                    label={`${isTopicInputComplete ? '再卜一卦' : '卜一卦'}`}
+                                >
+                                    <Divination startQuestion={startQuestion} onUpdate={handleChange} />
+                                </IconModal>
+                            </div>
                         </div>
                     </div>
                 );

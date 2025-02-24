@@ -17,23 +17,21 @@ function getRandomBoolean(): boolean {
     return Math.random() >= 0.5;
 }
 interface DivinationProps {
-    mode: string;
+    startQuestion: string; // the question that start the divination for
     onUpdate: (updatedValues: Partial<DivinationInputs>) => void; //expose guaobj to parent
 }
 
 export default function Divination({
-    mode,
+    startQuestion,
     onUpdate
 }: DivinationProps) {
     const guaIndexDataMemo = useMemo(() => guaIndexData, []);
     const guaListDataMemo = useMemo(() => Object.values(guaListEnum), []);
     const [frontList, setFrontList] = useState([true, true, true]);
     const [rotation, setRotation] = useState(false);
-
     const [hexagramList, setHexagramList] = useState<HexagramObj[]>([]);
-
     const [resultObj, setResultObj] = useState<GuaObj | null>(null);
-    const [question, setQuestion] = useState(mode === "NEWGUA" ? "NEWGUA" : "");
+    const [question, setQuestion] = useState(startQuestion);
 
     const flexRef = useRef<HTMLDivElement>(null);
 
@@ -81,11 +79,12 @@ export default function Divination({
                 onUpdate({
                     currentHex: hexagramList,
                     currentGua: resultObj,
+                    startQuestion: startQuestion
                 });
                 lastUpdateRef.current = { currentHex: hexagramList, currentGua: resultObj };
             }
         }
-    }, [resultObj, hexagramList, onUpdate]);
+    }, [resultObj, hexagramList, startQuestion, onUpdate]);
 
     function onTransitionEnd() {
         setRotation(false);
@@ -108,9 +107,6 @@ export default function Divination({
         });
 
     }
-
-
-    // function startClick()
 
     function restartClick() {
         setResultObj(null);
@@ -176,7 +172,7 @@ export default function Divination({
             className="gap mx-auto flex h-full w-[90%] flex-1 flex-col flex-nowrap items-center"
         >
             <Question question={question} setQuestion={setQuestion} />
-
+            <span>{startQuestion}</span>
             {!inputQuestion && (
                 <Coin
                     onTransitionEnd={onTransitionEnd}

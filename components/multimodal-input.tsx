@@ -222,6 +222,8 @@ function PureMultimodalInput({
       {isTopicInputComplete && (
         <>
           <TopicButtons />
+
+          {/* attachment */}
           <input
             type="file"
             className="fixed -top-4 -left-4 size-0.5 opacity-0 pointer-events-none"
@@ -230,7 +232,6 @@ function PureMultimodalInput({
             onChange={handleFileChange}
             tabIndex={-1}
           />
-
           {(attachments.length > 0 || uploadQueue.length > 0) && (
             <div className="flex flex-row gap-2 overflow-x-scroll items-end">
               {attachments.map((attachment) => (

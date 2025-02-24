@@ -64,6 +64,7 @@ export function Chat({
         topicId: TopicIds.divination,
         hexagram: '',
         method: undefined,
+        startQuestion: undefined,
       };
     } else {
       return {

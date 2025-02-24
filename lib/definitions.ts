@@ -24,6 +24,7 @@ export interface DivinationInputs {
     currentGua?: GuaObj;
     hexagram: string;
     method?: '六爻' | '梅花易数' | '奇门遁甲';
+    startQuestion?: string;
 }
 export type TopicInputs = BaseTopicInputs | NumerologyInputs | DivinationInputs;
 
