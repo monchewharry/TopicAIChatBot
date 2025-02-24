@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React, { memo } from 'react';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from "rehype-raw";
 import { CodeBlock } from './code-block';
 
 const components: Partial<Components> = {
@@ -97,9 +98,9 @@ const remarkPlugins = [remarkGfm];
 
 const NonMemoizedMarkdown = ({ children }: { children: string }) => {
   return (
-    <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
+    <ReactMarkdown remarkPlugins={remarkPlugins} components={components} rehypePlugins={[rehypeRaw]}>
       {children}
-    </ReactMarkdown>
+    </ReactMarkdown >
   );
 };
 
