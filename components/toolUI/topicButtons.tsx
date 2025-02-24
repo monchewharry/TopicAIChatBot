@@ -9,7 +9,7 @@ import Result from "@/components/toolUI/zhouyi/result";
 import { Squares2X2Icon, Bars4Icon } from '@heroicons/react/24/outline';
 import { HexagramIcon } from '@/components/hexagramIcon';
 import { TopicIds } from '@/lib/definitions';
-import { MarkdownRenderer } from './zhouyi/markdownRender';
+import { ZhouyiMarkdownRenderer } from './zhouyi/markdownRender';
 import { useState, useEffect } from 'react';
 
 export function TopicButtons() {
@@ -87,7 +87,7 @@ export function TopicButtons() {
                         label="卦象文档"
                     >
                         <div className="flex flex-col max-w-md mx-auto gap-2 text-left">
-                            <MarkdownRenderer content={hexagramMd} markdownDir={`/zhouyi/${topicInputValues.currentGua?.guaMark}`} />;
+                            <ZhouyiMarkdownRenderer content={hexagramMd} markdownDir={`/zhouyi/${topicInputValues.currentGua?.guaMark}`} />;
                         </div>
                     </IconModal>
                 </div>
