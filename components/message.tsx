@@ -26,8 +26,9 @@ import { DocumentPreview } from '@/components/toolUI/document-preview';
 import { MessageReasoning } from './message-reasoning';
 import { BaziDisplay } from './toolUI/natalChart/AstrolabeData';
 import AstrolabeChart from './toolUI/natalChart/AstrolabeChart';
-import type { NumerologyInputs } from '@/lib/definitions';
-
+import type { DivinationInputs, NumerologyInputs } from '@/lib/definitions';
+import Hexagram from './toolUI/zhouyi/hexagram';
+import Result from './toolUI/zhouyi/result';
 const PurePreviewMessage = ({
   chatId,
   message,
@@ -211,7 +212,39 @@ const PurePreviewMessage = ({
                       }
                       break;
                     }
-
+                    case 'getDivination': {
+                      switch (state) {
+                        case 'call':
+                          return (
+                            <div
+                              key={toolCallId}
+                              className={cx({ skeleton: false })}
+                            >
+                              {null}
+                            </div>
+                          );
+                        case 'result': {
+                          const inputs = topicInputValues as DivinationInputs;
+                          return (
+                            <div key={toolCallId}>
+                              <div className="flex max-w-md gap-2">
+                                {inputs.currentHex && (
+                                  <Hexagram list={inputs.currentHex} />
+                                )}
+                                {inputs.currentGua && (
+                                  <div className="flex flex-col justify-around">
+                                    <Result {...inputs.currentGua} />
+                                  </div>
+                                )}
+                              </div>
+                              <pre>{JSON.stringify(toolInvocation.result, null, 2)}</pre>
+                              <p>Click the button below to view</p>
+                            </div>
+                          );
+                        }
+                      }
+                      break;
+                    }
                   }
                   // tool result ready
                   if (state === 'result') {

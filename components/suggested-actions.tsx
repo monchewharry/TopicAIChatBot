@@ -86,9 +86,9 @@ function getSuggestedActionsByTopic(topicInputs: TopicInputs) {
           action: `${topicInputs.currentGua?.guaResult ?? ""}对问题${topicInputs.startQuestion ?? ''}的解读.`,
         },
         {
-          title: 'divination title',
-          label: `divination label`,
-          action: `divination action`,
+          title: '今天运势如何？',
+          label: '卦象运势',
+          action: `divination for question`,
         },
       ];
     }

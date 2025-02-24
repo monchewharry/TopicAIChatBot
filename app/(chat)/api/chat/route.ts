@@ -23,9 +23,9 @@ import { getWeather } from '@/lib/ai/tools/get-weather';
 import { createDocument } from '@/lib/ai/tools/create-document';
 import { updateDocument } from '@/lib/ai/tools/update-document';
 import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
-import { askForBirthConfirmation, getBazi, getNatalChart } from '@/lib/ai/tools/topicTools/clientToolsSet';
+import { getBazi, getNatalChart, getDivination } from '@/lib/ai/tools/topicTools/clientToolsSet';
 import { generateTitleFromUserMessage } from '../../actions';
-import type { RequestBodyItem } from '@/lib/definitions';
+import { TopicIds, type RequestBodyItem } from '@/lib/definitions';
 import { consoleLogObject } from '@/lib/devtool';
 export const maxDuration = 60;
 
@@ -92,21 +92,25 @@ export async function POST(request: Request) {
         experimental_activeTools: // Limits the tools that are available for the model to call
           selectedChatModel === 'chat-model-reasoning'
             ? []
-            : [
-              'askForBirthConfirmation',
-              'getBazi',
-              'getNatalChart',
-              'getWeather',
-              'createDocument',
-              'updateDocument',
-              'requestSuggestions',
-            ],
+            : topicId === TopicIds.numerology
+              ? [
+                'getBazi',
+                'getNatalChart',
+
+              ] : topicId === TopicIds.divination
+                ? [
+                  // 'getDivination',
+                ] : [
+                  'getWeather',
+                  'createDocument',
+                  'updateDocument',
+                  'requestSuggestions'],
         experimental_transform: smoothStream({ chunking: 'word' }),
         experimental_generateMessageId: generateUUID,
         tools: {
-          askForBirthConfirmation,
           getBazi,
           getNatalChart,
+          getDivination,
           getWeather,
           createDocument: createDocument({ session, dataStream }),
           updateDocument: updateDocument({ session, dataStream }),

@@ -87,7 +87,7 @@ export interface NatalChartData {
 }
 
 
-export type ClientToolCallResult = string | NatalChartData | undefined;
+export type ClientToolCallResult = string | NatalChartData | GuaObj | undefined;
 
 export interface RequestBodyItem {
     id: string;

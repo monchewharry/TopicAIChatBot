@@ -92,13 +92,13 @@ export function Chat({
   ): Promise<ClientToolCallResult> {
 
     const currentTopicInputValues = topicInputValuesRef.current; // Get the latest value
+    let result: ClientToolCallResult;
     if (currentTopicInputValues.topicId === TopicIds.numerology) {
       // console.log('solarDateStr in myOnToolCall', currentTopicInputValues.solarDateStr);
       const astrolabeData = bySolar(
         currentTopicInputValues.solarDateStr,
         currentTopicInputValues.timeIndex,
         currentTopicInputValues.gender);
-      let result: ClientToolCallResult;
       switch (toolCall.toolName) {
         case 'getBazi':
           result = astrolabeData.chineseDate;
@@ -107,9 +107,14 @@ export function Chat({
           result = getAllOriginalPalacesStarsData(astrolabeData);
           break;
       }
-      return result;
+    } else if (currentTopicInputValues.topicId === TopicIds.divination) {
+      switch (toolCall.toolName) {
+        case 'getDivination':
+          result = currentTopicInputValues.currentGua
+          break;
+      }
     }
-
+    return result;
   };
 
   const {
