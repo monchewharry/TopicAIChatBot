@@ -20,8 +20,11 @@ import {
   sanitizeResponseMessages,
 } from '@/lib/utils';
 import { getWeather } from '@/lib/ai/tools/get-weather';
-import { generateTitleFromUserMessage } from '../../actions';
+import { createDocument } from '@/lib/ai/tools/create-document';
+import { updateDocument } from '@/lib/ai/tools/update-document';
+import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
 import { askForBirthConfirmation, getBazi, getNatalChart } from '@/lib/ai/tools/topicTools/clientToolsSet';
+import { generateTitleFromUserMessage } from '../../actions';
 import type { RequestBodyItem } from '@/lib/definitions';
 import { consoleLogObject } from '@/lib/devtool';
 export const maxDuration = 60;
@@ -93,7 +96,10 @@ export async function POST(request: Request) {
               'askForBirthConfirmation',
               'getBazi',
               'getNatalChart',
-              'getWeather'
+              'getWeather',
+              'createDocument',
+              'updateDocument',
+              'requestSuggestions',
             ],
         experimental_transform: smoothStream({ chunking: 'word' }),
         experimental_generateMessageId: generateUUID,
@@ -102,6 +108,12 @@ export async function POST(request: Request) {
           getBazi,
           getNatalChart,
           getWeather,
+          createDocument: createDocument({ session, dataStream }),
+          updateDocument: updateDocument({ session, dataStream }),
+          requestSuggestions: requestSuggestions({
+            session,
+            dataStream,
+          }),
         },
         onFinish: async ({ response, reasoning }) => {
           consoleLogObject({ logType: 'response', responseMessages: response.messages });

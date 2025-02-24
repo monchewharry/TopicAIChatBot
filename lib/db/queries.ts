@@ -4,7 +4,6 @@ import { genSaltSync, hashSync } from 'bcrypt-ts';
 import { and, asc, desc, eq, gt, gte, inArray, sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
-
 import {
   type Message as DBMessage,
   user,
@@ -18,7 +17,7 @@ import {
 } from '@/lib/db/schema';
 
 import type { BlockKind } from '@/components/block';
-import type { TopicInputs } from '../definitions';
+import type { TopicInputs, TopicIds } from '../definitions';
 // Optionally, if not using email/pass login, you can
 // use the Drizzle adapter for Auth.js / NextAuth
 // https://authjs.dev/reference/adapter/drizzle
@@ -63,7 +62,7 @@ export async function saveChat({
   id: string;
   userId: string;
   title: string;
-  topicId?: "topic-numerology" | "topic-divination";
+  topicId?: TopicIds;
   topicInputValues: TopicInputs
 }) {
   try {

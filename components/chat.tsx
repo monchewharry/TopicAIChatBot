@@ -66,18 +66,18 @@ export function Chat({
         method: undefined,
       };
     } else {
-      // Provide a default valid TopicInputs value (fallback case)
       return {
         topicId: DEFAULT_CHAT_TOPIC, // Default topic
-        solarDateStr: todayStr,
-        timeIndex: 0,
-        gender: 'male',
       };
     }
   }, [chatTopicData, selectedTopicId]);
 
   const [isTopicInputComplete, setIsTopicInputComplete] = useState<boolean>(CompleteInitialier);
-
+  useEffect(() => {
+    if (selectedTopicId === TopicIds.general) {
+      setIsTopicInputComplete(true)
+    };
+  }, [selectedTopicId]);
   const [topicInputValues, setTopicInputValues] = useState<TopicInputs>(TopicInputValuesInitialier);
 
   const topicInputValuesRef = useRef(topicInputValues);

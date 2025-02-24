@@ -1,5 +1,5 @@
 import { TopicIds } from "../definitions";
-export const DEFAULT_CHAT_TOPIC = TopicIds.numerology;
+export const DEFAULT_CHAT_TOPIC = TopicIds.general;
 
 interface ChatTopics {
     id: TopicIds;
@@ -8,6 +8,11 @@ interface ChatTopics {
 }
 
 export const chatTopics: Array<ChatTopics> = [
+    {
+        id: TopicIds.general,
+        name: '随便问问',
+        description: '世间万物',
+    },
     {
         id: TopicIds.numerology,
         name: '中华命理',

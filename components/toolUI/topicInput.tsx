@@ -163,7 +163,7 @@ export function TopicInput({
                     </div>
                 );
             }
-            default: {
+            case TopicIds.general: {
                 return null;
             }
         }

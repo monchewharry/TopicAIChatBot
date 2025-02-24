@@ -69,7 +69,7 @@ export function TopicButtons() {
             );
         }
         // Add more cases for other topics as needed
-        default:
+        case TopicIds.general:
             return null;
     }
 };

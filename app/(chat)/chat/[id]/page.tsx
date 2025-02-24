@@ -41,7 +41,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   const chatTopicFromCookie = cookieStore.get('chat-topic');
 
   const selectedChatModel = chatModelFromCookie?.value ?? DEFAULT_CHAT_MODEL;
-  const selectedTopicId = chatTopicFromCookie?.value as TopicIds ?? DEFAULT_CHAT_TOPIC;
+  const selectedTopicId = chatTopicData.topicId ?? DEFAULT_CHAT_TOPIC;
 
   return (
     <>

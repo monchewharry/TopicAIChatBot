@@ -207,7 +207,6 @@ function PureMultimodalInput({
         attachments.length === 0 &&
         uploadQueue.length === 0 && (
           <>
-            {/* TopicInput -> onInputChange -> input state -> submits the form*/}
             <TopicInput onInputChange={handleTopicInputChange} />
             {
               isTopicInputComplete && (

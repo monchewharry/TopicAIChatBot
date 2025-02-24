@@ -92,7 +92,7 @@ function getSuggestedActionsByTopic(topicInputs: TopicInputs) {
         },
       ];
     }
-    default:
+    case TopicIds.general:
       return defaultSuggestedActions;
   }
 }

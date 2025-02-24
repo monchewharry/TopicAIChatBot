@@ -3,28 +3,29 @@ import type { Language } from "iztro/lib/data/types/general";
 import type { Message } from 'ai';
 
 export enum TopicIds {
+    general = 'topic-general',
     numerology = 'topic-numerology',
-    divination = 'topic-divination'
+    divination = 'topic-divination',
+
 }
 export interface BaseTopicInputs {
-    topicId: string; // Discriminator field
-    test?: boolean
+    topicId: TopicIds.general; // Discriminator field
 }
 
-export interface NumerologyInputs extends BaseTopicInputs {
+export interface NumerologyInputs {
     topicId: TopicIds.numerology; // Discriminated union
     solarDateStr: string;
     timeIndex: number;
     gender: GenderName;
 }
-export interface DivinationInputs extends BaseTopicInputs {
+export interface DivinationInputs {
     topicId: TopicIds.divination; // Discriminated union
     currentHex?: HexagramObj[];
     currentGua?: GuaObj;
     hexagram: string;
     method?: '六爻' | '梅花易数' | '奇门遁甲';
 }
-export type TopicInputs = NumerologyInputs | DivinationInputs;
+export type TopicInputs = BaseTopicInputs | NumerologyInputs | DivinationInputs;
 
 
 export interface BySolarProps extends NumerologyInputs {
