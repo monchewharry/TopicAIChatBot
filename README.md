@@ -27,10 +27,14 @@
 > And message id are the same for the two assistant message (`onToolCall`). So when saving the two message to the database, we need to generate a new message id for the `tool-result`.
 
 ### API Routes
+
 - Request for `steamText()` at `\app\(chat)\api\chat`
+
 - get Chats By UserId at `\app\(chat)\api\history`
-- at `\app\(chat)\api\vote`
-- at `\app\(chat)\api\document`
+- user rating at `\app\(chat)\api\vote`
+- Block Document at `\app\(chat)\api\document`
+
+- Sent attachment along with message at `\app\(chat)\api\files` and store the file in Blob (Only images and not RAG).
 
 #### chat
 
@@ -48,6 +52,8 @@
 
 
 #### document
+
+#### files
 
 
 ### Chat UI
