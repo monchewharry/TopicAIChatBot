@@ -1,7 +1,7 @@
 import { TopicIds } from "../definitions";
 export const DEFAULT_CHAT_TOPIC = TopicIds.general;
 
-interface ChatTopics {
+export interface ChatTopics {
     id: TopicIds;
     name: string;
     description: string;

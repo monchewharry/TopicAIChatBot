@@ -1,5 +1,5 @@
 import { myProvider } from '@/lib/ai/models';
-import { sheetPrompt, updateDocumentPrompt } from '@/lib/ai/prompts';
+import { sheetPrompt, updateDocumentPrompt } from '@/lib/ai/prompts/blockPrompts';
 import { createDocumentHandler } from '@/lib/blocks/server';
 import { streamObject } from 'ai';
 import { z } from 'zod';
