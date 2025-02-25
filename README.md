@@ -26,13 +26,31 @@
 > The client side tool's `tool-call` is in assistant response message, while `too-result` will be in the next assistant request message if user send more questions upon the tool's result.  
 > And message id are the same for the two assistant message (`onToolCall`). So when saving the two message to the database, we need to generate a new message id for the `tool-result`.
 
-### API
+### API Routes
+- Request for `steamText()` at `\app\(chat)\api\chat`
+- get Chats By UserId at `\app\(chat)\api\history`
+- at `\app\(chat)\api\vote`
+- at `\app\(chat)\api\document`
+
+#### chat
+
+
 
 - `/app/api/chat/route.ts`
 
 > [!NOTE] 
 > sendExtraMessageFields
 > when enable `sendExtraMessageFields: true` in `useChat`, extra fields like `id`, `createdAt` will be added to the `message`. Especially, the assistant role message might be added with the `revisionId`.
+
+#### history
+
+
+
+#### vote
+
+
+#### document
+
 
 ### Chat UI
 

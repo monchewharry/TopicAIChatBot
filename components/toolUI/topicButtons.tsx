@@ -93,7 +93,7 @@ export function TopicButtons() {
                             label="卦象文档"
                         >
                             <div className="flex flex-col max-w-md mx-auto gap-2 text-left">
-                                <ZhouyiMarkdownRenderer content={hexagramMd} markdownDir={`/zhouyi/${topicInputValues.currentGua?.guaMark}`} />;
+                                <ZhouyiMarkdownRenderer content={hexagramMd} markdownDir={`/zhouyi/${topicInputValues.currentGua?.guaMark}`} />
                             </div>
                         </IconModal>
                     </>

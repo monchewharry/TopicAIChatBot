@@ -8,8 +8,6 @@ import Question from "@/components/toolUI/zhouyi/question";
 import { animateChildren } from "@/lib/animate";
 import guaIndexData from "@/lib/toolData/gua-index.json";
 import { guaListEnum, guaBaseArray, guaElementEnum, changeYangEnum, changeYinEnum } from "@/lib/toolData/toolTypes";
-import { Button } from "@/components/ui/button";
-import { ListRestart } from "lucide-react";
 
 const AUTO_DELAY = 600;
 function getRandomBoolean(): boolean {
