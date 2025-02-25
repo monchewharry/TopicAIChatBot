@@ -27,6 +27,7 @@ import { getBazi, getNatalChart, getDivination } from '@/lib/ai/tools/topicTools
 import { generateTitleFromUserMessage } from '../../actions';
 import { TopicIds, type RequestBodyItem } from '@/lib/definitions';
 import { consoleLogObject } from '@/lib/devtool';
+import type { ToolSet } from 'ai';
 export const maxDuration = 60;
 
 export async function POST(request: Request) {
@@ -82,6 +83,23 @@ export async function POST(request: Request) {
     });
   }
 
+  function selectedActiveTools(selectedChatModel: string, topicId: TopicIds) {
+    return selectedChatModel === 'chat-model-reasoning'
+      ? []
+      : topicId === TopicIds.numerology
+        ? [
+          'getBazi',
+          'getNatalChart',
+
+        ] : topicId === TopicIds.divination
+          ? [
+            // 'getDivination',
+          ] : [
+            'getWeather',
+            'createDocument',
+            'updateDocument',
+            'requestSuggestions']
+  };
   return createDataStreamResponse({
     execute: (dataStream) => {
       const result = streamText({
@@ -89,22 +107,21 @@ export async function POST(request: Request) {
         system: systemPrompt({ selectedChatModel }),
         messages,
         maxSteps: 5,
-        experimental_activeTools: // Limits the tools that are available for the model to call
-          selectedChatModel === 'chat-model-reasoning'
-            ? []
-            : topicId === TopicIds.numerology
-              ? [
-                'getBazi',
-                'getNatalChart',
+        experimental_activeTools: selectedChatModel === 'chat-model-reasoning'
+          ? []
+          : topicId === TopicIds.numerology
+            ? [
+              'getBazi',
+              'getNatalChart',
 
-              ] : topicId === TopicIds.divination
-                ? [
-                  // 'getDivination',
-                ] : [
-                  'getWeather',
-                  'createDocument',
-                  'updateDocument',
-                  'requestSuggestions'],
+            ] : topicId === TopicIds.divination
+              ? [
+                // 'getDivination',
+              ] : [
+                'getWeather',
+                'createDocument',
+                'updateDocument',
+                'requestSuggestions'],// Limits the tools that are available for the model to call
         experimental_transform: smoothStream({ chunking: 'word' }),
         experimental_generateMessageId: generateUUID,
         tools: {

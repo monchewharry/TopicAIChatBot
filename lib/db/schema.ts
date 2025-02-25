@@ -33,7 +33,7 @@ export const chat = pgTable('Chat', {
     .default('private'),
   topicId: varchar('topicId', { enum: Object.values(TopicIds) as [string, ...string[]] })
     .notNull()
-    .default(TopicIds.numerology),
+    .default(TopicIds.general),
 
   topicInputValues: jsonb('topicInputValues'), // Store TopicInputs as JSONB
 });

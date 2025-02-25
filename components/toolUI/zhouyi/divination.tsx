@@ -15,17 +15,17 @@ function getRandomBoolean(): boolean {
 }
 interface DivinationProps {
     startQuestion: string; // the question that start the divination for
-    onTopicInputUpdate: (updatedValues: Partial<DivinationInputs>) => void; //expose guaobj to parent
+    onTopicInputUpdate: (updatedValues: Partial<DivinationInputs>) => void;
 }
 
 export default function Divination({
     startQuestion,
     onTopicInputUpdate
 }: DivinationProps) {
-    const guaIndexDataMemo = useMemo(() => guaIndexData, []);
-    const guaListDataMemo = useMemo(() => Object.values(guaListEnum), []);
-    const [frontList, setFrontList] = useState([true, true, true]);
     const [rotation, setRotation] = useState(false);
+    const guaIndexDataMemo = useMemo(() => guaIndexData, []);
+    const guaListDataMemo = Object.values(guaListEnum);
+    const [frontList, setFrontList] = useState([true, true, true]);
     const [hexagramList, setHexagramList] = useState<HexagramObj[]>([]);
     const [resultObj, setResultObj] = useState<GuaObj | null>(null);
     const [question, setQuestion] = useState(startQuestion);
@@ -119,7 +119,6 @@ export default function Divination({
             return;
         }
         const guaElement = Object.values(guaElementEnum);
-
         const changeYang = Object.values(changeYangEnum);
         const changeYin = Object.values(changeYinEnum);
 
@@ -157,13 +156,10 @@ export default function Divination({
             guaChange:
                 changeList.length === 0 ? "无变爻" : `变爻: ${changeList.toString()}`,
         }
-        // ✅ First, update the local state
         setResultObj(thisResutObj);
-
     }
 
     const showResult = resultObj !== null;
-    const inputQuestion = false;
     return (
         <div
             ref={flexRef}
@@ -171,15 +167,13 @@ export default function Divination({
         >
             <Question question={question} setQuestion={setQuestion} />
             <span>{startQuestion}</span>
-            {!inputQuestion && (
-                <Coin
-                    onTransitionEnd={onTransitionEnd}
-                    frontList={frontList}
-                    rotation={rotation}
-                />
-            )}
+            <Coin
+                onTransitionEnd={onTransitionEnd}
+                frontList={frontList}
+                rotation={rotation}
+            />
 
-            {!inputQuestion && !showResult && (
+            {!showResult && (
                 <div className="relative">
                     <span className="pl-2 text-lg font-medium">
                         🎲 第{" "}
@@ -191,7 +185,7 @@ export default function Divination({
                 </div>
             )}
 
-            {!inputQuestion && hexagramList.length !== 0 && (
+            {hexagramList.length !== 0 && (
                 <div className="flex max-w-md gap-2">
                     <Hexagram list={hexagramList} />
                     {showResult && (

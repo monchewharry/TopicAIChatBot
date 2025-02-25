@@ -34,8 +34,6 @@
 
 #### chat
 
-
-
 - `/app/api/chat/route.ts`
 
 > [!NOTE] 
