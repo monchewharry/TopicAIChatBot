@@ -1,3 +1,29 @@
+# multi-modal RAG ai chatbot for Topic with tools
+<!-- TOC -->
+
+- [multi-modal RAG ai chatbot for Topic with tools](#multi-modal-rag-ai-chatbot-for-topic-with-tools)
+    - [Dev Note](#dev-note)
+        - [DataBase](#database)
+        - [API Routes](#api-routes)
+            - [chat](#chat)
+            - [history](#history)
+            - [vote](#vote)
+            - [document](#document)
+            - [files](#files)
+        - [Chat UI](#chat-ui)
+        - [Tool](#tool)
+            - [Client Tools](#client-tools)
+            - [Server tools](#server-tools)
+        - [RAG](#rag)
+        - [vscode editor setting](#vscode-editor-setting)
+        - [structure](#structure)
+    - [Features](#features)
+    - [Model Providers](#model-providers)
+    - [Deploy Your Own](#deploy-your-own)
+    - [Running locally](#running-locally)
+
+<!-- /TOC -->
+
 
 ## Dev Note  
 
@@ -122,7 +148,8 @@ async function onToolCall(
 };
 ```
 
-#### Topic Feature Tools
+#### Client Tools
+
 - bazi feature
   - [lunar-lite](https://github.com/SylarLong/lunar-lite.git) 
   - [iztro](https://github.com/SylarLong/iztro.git)
@@ -133,6 +160,16 @@ async function onToolCall(
     - [knowledge docs](https://github.com/sunls2/zhouyi)
   - [JS Humoonruc/auto-divination](https://github.com/Humoonruc/auto-divination)
   - [JS douxt/divination](https://github.com/douxt/divination)
+
+#### Server tools
+
+- weather
+- coding
+- document editing
+
+
+### RAG
+
 
 
 

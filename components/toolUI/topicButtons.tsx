@@ -15,13 +15,7 @@ import { motion } from 'framer-motion';
 export function TopicButtons() {
     const { topicInputValues } = useChatContext();
     const [hexagramMd, setHexagramMd] = useState('');
-    // State to track whether the menu is expanded
-    const [isMenuExpanded, setIsMenuExpanded] = useState(false);
 
-    // Function to toggle the menu
-    const toggleMenu = () => {
-        setIsMenuExpanded(!isMenuExpanded);
-    };
     useEffect(() => {
         if (topicInputValues.topicId !== TopicIds.divination) {
             return;

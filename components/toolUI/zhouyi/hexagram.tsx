@@ -1,8 +1,8 @@
-import React from "react";
+// import React from "react";
 import clsx from "clsx";
 import type { HexagramObj } from '@/lib/definitions'
-
-function Hexagram(props: { list: HexagramObj[] }) {
+import { memo } from "react";
+function PureHexagram(props: { list: HexagramObj[] }) {
   return (
     <div className="flex h-52 w-56 shrink-0 flex-col-reverse gap-1.5 overflow-hidden rounded-md border bg-secondary py-3 shadow-inner dark:border-0 dark:shadow-none sm:h-60 sm:w-72">
       {props.list.map((value, _) => {
@@ -16,6 +16,9 @@ function Hexagram(props: { list: HexagramObj[] }) {
     </div>
   );
 }
+
+const Hexagram = memo(PureHexagram);
+
 
 function Line(props: { change: boolean | null; yang: boolean; hexid: number }) {
   const changeYang = props.change && props.yang;
@@ -59,7 +62,4 @@ function Change(props: { changeYang: boolean | null }) {
     </div>
   );
 }
-
-
-
 export default Hexagram;

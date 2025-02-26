@@ -1,8 +1,9 @@
-import React from "react";
+// import React from "react";
 import getSelectedAstrolabeData from "@/lib/iztroData";
 import type { BySolarProps } from "@/lib/definitions";
 import type { HeavenlyStemAndEarthlyBranchDate } from "lunar-lite/lib/types";
 import { TopicIds } from "@/lib/definitions";
+import { useMemo } from "react";
 interface AstroDataFCprops extends BySolarProps {
     title: string;
     property: keyof ReturnType<typeof getSelectedAstrolabeData>; // Ensures the property is valid
@@ -18,7 +19,9 @@ export const AstroData: React.FC<AstroDataFCprops> = ({
     title,
     property,
 }) => {
-    const result = getSelectedAstrolabeData({ topicId, solarDateStr, timeIndex, gender, fixLeap, language });
+    const result = useMemo(() => {
+        return getSelectedAstrolabeData({ topicId, solarDateStr, timeIndex, gender, fixLeap, language })
+    }, [topicId, solarDateStr, timeIndex, gender, fixLeap, language])
     const value = result[property];
     switch (property) {
         case "rawDates":

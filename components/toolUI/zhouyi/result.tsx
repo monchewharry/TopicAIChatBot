@@ -1,7 +1,8 @@
-import React from "react";
+// import React from "react";
 import type { GuaObj } from "@/lib/definitions"
+import { memo } from "react";
 
-export default function Result(props: GuaObj) {
+function PureResult(props: GuaObj) {
   return (
     <div className="flex flex-col items-start justify-center gap-2 sm:gap-3">
       {props.guaTitle}
@@ -19,3 +20,7 @@ export default function Result(props: GuaObj) {
     </div>
   );
 }
+
+const Result = memo(PureResult);
+
+export default Result;
