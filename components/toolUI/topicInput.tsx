@@ -52,9 +52,9 @@ export function TopicInput({
         switch (topicInputValues.topicId) {
             case TopicIds.numerology: {
                 return (
-                    <div className="text-left border rounded-xl px-4 py-3.5 text-sm">
+                    <>
                         {/* input part */}
-                        <div className="flex flex-col sm:flex-col lg:flex-row w-full h-auto justify-start items-start">
+                        <div className="flex flex-row sm:flex-col lg:flex-row w-full h-auto justify-start items-start">
                             <div className="flex flex-col">
                                 <label htmlFor="date-picker" className="font-medium">Date:</label>
                                 <DatePicker
@@ -154,15 +154,16 @@ export function TopicInput({
                                 Select a date, time, and gender to get your numerology reading.
                             </span>
                         </div>
-                    </div>
+                    </>
                 );
             }
             // Add more cases for other topics as needed
             case TopicIds.divination: {
                 return (
-                    <div className="text-left border rounded-xl px-4 py-3.5 text-sm">
-                        <div className="flex flex-col sm:flex-col lg:flex-row w-auto h-auto justify-start items-start">
-                            <div className="w-full mt-2 text-left">
+                    <>
+                        {/* input part */}
+                        <div className="flex flex-row sm:flex-col lg:flex-row px-4 bg-background pb-4 md:pb-6 gap-2 w-full md:max-w-3xl">
+                            <div className="relative w-full flex flex-col gap-4">
                                 <Textarea
                                     ref={textareaRef}
                                     placeholder="先问问题"
@@ -176,9 +177,11 @@ export function TopicInput({
                                             // submitStartQuestion();
                                         }
                                     }}
+                                    disabled={isTopicInputComplete}
                                 />
+
                             </div>
-                            <div className="grid sm:grid-cols-4 gap-2 w-full mt-2 ml-2">
+                            <div className="grid sm:grid-cols-1 gap-2 w-auto mt-2 ml-2">
                                 <IconModal
                                     icon={<HexagramIcon size={40} />}
                                     label={`${isTopicInputComplete ? '再卜一卦' : '卜一卦'}`}
@@ -187,7 +190,13 @@ export function TopicInput({
                                 </IconModal>
                             </div>
                         </div>
-                    </div>
+                        {/* card footnote */}
+                        <div className="w-full mt-2 text-left">
+                            <span className="text-muted-foreground">
+                                Ask a question and press the button.
+                            </span>
+                        </div>
+                    </>
                 );
             }
             case TopicIds.general: {
@@ -205,7 +214,8 @@ export function TopicInput({
             key={"topicinputspanel"}
             className={'block'}
         >
-            <div className="flex flex-row justify-center items-center  mb-5">
+            {/* wrap a border */}
+            <div className="flex flex-col text-left border rounded-xl px-4 py-3.5 text-sm mb-5 justify-center items-center">
                 {renderInputsForTopic()}
             </div>
         </motion.div>
