@@ -30,7 +30,7 @@
 - [Template nextjs-ai-chatbot](https://vercel.com/templates/next.js/nextjs-ai-chatbot)
 - [ai-sdk doc](https://sdk.vercel.ai/docs/introduction)
 - [multimodal-chat](https://sdk.vercel.ai/docs/guides/multi-modal-chatbot)
-- [RAG-chat](https://vercel.com/templates/next.js/ai-sdk-internal-knowledge-base)
+- [RAG-chat](https://github.com/vercel-labs/ai-sdk-preview-rag.git)
 - [multistep-tool demo](https://vercel.com/templates/next.js/ai-sdk-roundtrips)
 
 ### DataBase
@@ -60,7 +60,7 @@
 - user rating at `\app\(chat)\api\vote`
 - Block Document at `\app\(chat)\api\document`
 
-- Sent attachment along with message at `\app\(chat)\api\files` and store the file in Blob (Only images and not RAG).
+- Sent attachment along with message at `\app\(chat)\api\files` and store the file in Blob Store (Only images and not RAG).
 
 #### chat
 

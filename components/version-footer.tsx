@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { useWindowSize } from 'usehooks-ts';
 
-import type { Document } from '@/lib/db/schema';
+import type { Document } from '@/lib/db/schemas/schema';
 import { getDocumentTimestampByIndex } from '@/lib/utils';
 import { LoaderIcon } from './icons';
 import { Button } from './ui/button';
@@ -68,18 +68,18 @@ export const VersionFooter = ({
               {
                 optimisticData: documents
                   ? [
-                      ...documents.filter((document) =>
-                        isAfter(
-                          new Date(document.createdAt),
-                          new Date(
-                            getDocumentTimestampByIndex(
-                              documents,
-                              currentVersionIndex,
-                            ),
+                    ...documents.filter((document) =>
+                      isAfter(
+                        new Date(document.createdAt),
+                        new Date(
+                          getDocumentTimestampByIndex(
+                            documents,
+                            currentVersionIndex,
                           ),
                         ),
                       ),
-                    ]
+                    ),
+                  ]
                   : [],
               },
             );

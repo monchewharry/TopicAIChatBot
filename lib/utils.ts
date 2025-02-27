@@ -8,8 +8,8 @@ import type {
 } from 'ai';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-
-import type { Message as DBMessage, Document } from '@/lib/db/schema';
+import { customAlphabet } from "nanoid";
+import type { Message as DBMessage, Document } from '@/lib/db/schemas/schema';
 import { consoleLogObject } from './devtool';
 /**
  * merging Tailwind CSS class names
@@ -274,3 +274,7 @@ export function getDocumentTimestampByIndex(
 
   return documents[index].createdAt;
 }
+
+
+
+export const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789");

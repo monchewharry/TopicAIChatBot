@@ -14,7 +14,7 @@ import {
   suggestion,
   message,
   vote,
-} from '@/lib/db/schema';
+} from '@/lib/db/schemas/schema';
 
 import type { BlockKind } from '@/components/block';
 import type { TopicInputs, TopicIds } from '../definitions';

@@ -10,7 +10,7 @@ import {
   RedoIcon,
   UndoIcon,
 } from '@/components/icons';
-import type { Suggestion } from '@/lib/db/schema';
+import type { Suggestion } from '@/lib/db/schemas/schema';
 import { toast } from 'sonner';
 import { getSuggestions } from '../actions';
 
@@ -47,8 +47,8 @@ export const textBlock = new Block<'text', TextBlockMetadata>({
           content: draftBlock.content + (streamPart.content as string),
           isVisible:
             draftBlock.status === 'streaming' &&
-            draftBlock.content.length > 400 &&
-            draftBlock.content.length < 450
+              draftBlock.content.length > 400 &&
+              draftBlock.content.length < 450
               ? true
               : draftBlock.isVisible,
           status: 'streaming',
@@ -91,7 +91,7 @@ export const textBlock = new Block<'text', TextBlockMetadata>({
           />
 
           {metadata?.suggestions &&
-          metadata.suggestions.length > 0 ? (
+            metadata.suggestions.length > 0 ? (
             <div className="md:hidden h-dvh w-12 shrink-0" />
           ) : null}
         </div>

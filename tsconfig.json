@@ -38,6 +38,7 @@
   ],
   "exclude": [
     "_test",
+    "_knowledge",
     "node_modules"
   ]
 }

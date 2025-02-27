@@ -11,7 +11,7 @@ import {
   foreignKey,
   boolean,
 } from 'drizzle-orm/pg-core';
-import { TopicIds } from '../definitions';
+import { TopicIds, type TopicInputs } from '../../definitions';
 
 export const user = pgTable('User', {
   id: uuid('id').primaryKey().notNull().defaultRandom(),
@@ -27,7 +27,7 @@ export const chat = pgTable('Chat', {
   title: text('title').notNull(),
   userId: uuid('userId')
     .notNull()
-    .references(() => user.id),
+    .references(() => user.id, { onDelete: 'cascade' }),
   visibility: varchar('visibility', { enum: ['public', 'private'] })
     .notNull()
     .default('private'),
@@ -35,7 +35,7 @@ export const chat = pgTable('Chat', {
     .notNull()
     .default(TopicIds.general),
 
-  topicInputValues: jsonb('topicInputValues'), // Store TopicInputs as JSONB
+  topicInputValues: jsonb('topicInputValues').$type<TopicInputs>(),
 });
 
 export type Chat = InferSelectModel<typeof chat>;
@@ -44,7 +44,7 @@ export const message = pgTable('Message', {
   id: uuid('id').primaryKey().notNull().defaultRandom(),
   chatId: uuid('chatId')
     .notNull()
-    .references(() => chat.id),
+    .references(() => chat.id, { onDelete: 'cascade' }),
   role: varchar('role').notNull(),
   content: json('content').notNull(),
   createdAt: timestamp('createdAt').notNull(),
@@ -57,10 +57,10 @@ export const vote = pgTable(
   {
     chatId: uuid('chatId')
       .notNull()
-      .references(() => chat.id),
+      .references(() => chat.id, { onDelete: 'cascade' }),
     messageId: uuid('messageId')
       .notNull()
-      .references(() => message.id),
+      .references(() => message.id, { onDelete: 'cascade' }),
     isUpvoted: boolean('isUpvoted').notNull(),
   },
   (table) => {

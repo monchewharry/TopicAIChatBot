@@ -8,7 +8,7 @@ import {
 import { createRoot } from 'react-dom/client';
 
 import { Suggestion as PreviewSuggestion } from '@/components/suggestion';
-import type { Suggestion } from '@/lib/db/schema';
+import type { Suggestion } from '@/lib/db/schemas/schema';
 import type { BlockKind } from '@/components/block';
 
 export interface UISuggestion extends Suggestion {

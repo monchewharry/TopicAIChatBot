@@ -1,4 +1,4 @@
-import type { Suggestion } from '@/lib/db/schema';
+import type { Suggestion } from '@/lib/db/schemas/schema';
 import type { UseChatHelpers } from 'ai/react';
 import type { ComponentType, Dispatch, ReactNode, SetStateAction } from 'react';
 import type { DataStreamDelta } from './data-stream-handler';

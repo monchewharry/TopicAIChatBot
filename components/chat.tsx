@@ -6,7 +6,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import useSWR, { useSWRConfig } from 'swr';
 
 import { ChatHeader } from '@/components/chat-header';
-import type { Vote } from '@/lib/db/schema';
+import type { Vote } from '@/lib/db/schemas/schema';
 import { fetcher, generateUUID } from '@/lib/utils';
 
 import { Block } from './block';

@@ -11,7 +11,7 @@ import {
 import type { BlockKind, UIBlock } from '@/components/block';
 import { FileIcon, FullscreenIcon, ImageIcon, LoaderIcon } from '@/components/icons';
 import { cn, fetcher } from '@/lib/utils';
-import type { Document } from '@/lib/db/schema';
+import type { Document } from '@/lib/db/schemas/schema';
 import { InlineDocumentSkeleton } from '@/components/document-skeleton';
 import useSWR from 'swr';
 import { Editor } from '@/components/editor';
