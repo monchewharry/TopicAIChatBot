@@ -24,7 +24,7 @@ export const myProvider = customProvider({
     'large-model': openai.image('dall-e-3'),
   },
   textEmbeddingModels: {
-    'small-model': openai.embedding("text-embedding-3-small"),
+    'small-model': openai.embedding("text-embedding-3-small"), // openai.embedding("text-embedding-ada-002")
   },
 });
 

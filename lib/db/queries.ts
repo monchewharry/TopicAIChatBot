@@ -2,8 +2,7 @@ import 'server-only';
 
 import { genSaltSync, hashSync } from 'bcrypt-ts';
 import { and, asc, desc, eq, gt, gte, inArray, sql } from 'drizzle-orm';
-import { drizzle } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
+
 import {
   type Message as DBMessage,
   user,
@@ -15,16 +14,10 @@ import {
   message,
   vote,
 } from '@/lib/db/schemas/schema';
-
+import { db } from '.';
 import type { BlockKind } from '@/components/block';
 import type { TopicInputs, TopicIds } from '../definitions';
-// Optionally, if not using email/pass login, you can
-// use the Drizzle adapter for Auth.js / NextAuth
-// https://authjs.dev/reference/adapter/drizzle
 
-// biome-ignore lint: Forbidden non-null assertion.
-const client = postgres(process.env.POSTGRES_URL!);
-const db = drizzle(client);
 
 export async function getUser(email: string): Promise<Array<User>> {
   try {
@@ -378,3 +371,36 @@ export async function updateChatVisiblityById({
     throw error;
   }
 }
+
+import {
+  NewResourceParams,
+  insertResourceSchema,
+  resources,
+} from "@/lib/db/schemas/resources";
+import { generateEmbeddings } from "@/lib/ai/embedding";
+import { embeddings as embeddingsTable } from "@/lib/db/schemas/embeddings";
+
+// create content-embeddings and insert to table resources
+export const createResource = async (input: NewResourceParams) => {
+  try {
+    const { content } = insertResourceSchema.parse(input);
+
+    const [resource] = await db
+      .insert(resources)
+      .values({ content })
+      .returning();
+
+    const embeddings = await generateEmbeddings(content);
+    await db.insert(embeddingsTable).values(
+      embeddings.map((embedding) => ({
+        resourceId: resource.id,
+        ...embedding,
+      })),
+    );
+    return "Resource successfully created and embedded.";
+  } catch (error) {
+    return error instanceof Error && error.message.length > 0
+      ? error.message
+      : "Error, please try again.";
+  }
+};
