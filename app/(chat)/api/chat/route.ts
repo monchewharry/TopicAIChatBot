@@ -39,12 +39,6 @@ export async function POST(request: Request) {
     topicInputValues
   }: RequestBodyItem = await request.json();
   consoleLogObject({ logType: 'request', requestMessages: messages });
-  // check if user has sent a PDF
-  // const messagesHavePDF = messages.some(message =>
-  //   message.experimental_attachments?.some(
-  //     a => a.contentType === 'application/pdf',
-  //   ),
-  // );
 
   const session = await auth();
 
