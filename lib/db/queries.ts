@@ -416,6 +416,6 @@ export const createResourceByBlob = async (fileId: string, data: PutBlobResult) 
   } else {
     throw new Error("Unsupported file type");
   }
-  console.log("create resource with id", fileId)
+  console.log("create resource with id-", fileId)
   await createResource({ id: fileId, content });
 }
