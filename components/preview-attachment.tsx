@@ -1,5 +1,5 @@
 import type { Attachment } from 'ai';
-
+import Image from 'next/image';
 import { LoaderIcon } from './icons';
 
 export const PreviewAttachment = ({
@@ -18,7 +18,9 @@ export const PreviewAttachment = ({
           contentType.startsWith('image') ? (
             // NOTE: it is recommended to use next/image for images
             // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
+              width={11}
+              height={11}
               key={url}
               src={url}
               alt={name ?? 'An image attachment'}

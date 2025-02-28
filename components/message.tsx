@@ -155,6 +155,7 @@ const PurePreviewMessage = ({
             {/* Tool Result */}
             {(message.toolInvocations && message.toolInvocations.length > 0) && (
               <div className="flex flex-col gap-4">
+
                 {message.toolInvocations.map((toolInvocation) => {
                   const { toolName, toolCallId, state, args } = toolInvocation;
                   switch (toolName) {
@@ -252,6 +253,7 @@ const PurePreviewMessage = ({
 
                     return (
                       <div key={toolCallId}>
+                        <p>{toolName} result:</p>
                         {toolName === 'getWeather' ? (
                           <Weather weatherAtLocation={result} />
                         ) : toolName === 'createDocument' ? (

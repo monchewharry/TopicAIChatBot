@@ -204,20 +204,23 @@ export function TopicInput({
             }
         }
     };
+    const renderedInputPanel = renderInputsForTopic();
+    if (renderedInputPanel) {
+        return (
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ delay: 0.05 }}
+                key={"topicinputspanel"}
+                className={'block'}
+            >
+                {/* wrap a border */}
+                <div className="flex flex-col text-left border rounded-xl px-4 py-3.5 text-sm mb-5 justify-center items-center">
+                    {renderedInputPanel}
+                </div>
+            </motion.div>
+        );
+    }
 
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ delay: 0.05 }}
-            key={"topicinputspanel"}
-            className={'block'}
-        >
-            {/* wrap a border */}
-            <div className="flex flex-col text-left border rounded-xl px-4 py-3.5 text-sm mb-5 justify-center items-center">
-                {renderInputsForTopic()}
-            </div>
-        </motion.div>
-    );
 }

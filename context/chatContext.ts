@@ -8,6 +8,9 @@ interface ChatContextType {
 
     isTopicInputComplete: boolean;
     setIsTopicInputComplete: Dispatch<SetStateAction<boolean>>;
+
+    isRAGmode: boolean;
+    setRAGmode: Dispatch<SetStateAction<boolean>>;
 }
 
 export const ChatContext = createContext<ChatContextType | undefined>(undefined);

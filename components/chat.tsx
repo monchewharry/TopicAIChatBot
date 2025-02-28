@@ -41,6 +41,7 @@ export function Chat({
   isReadonly: boolean;
 }) {
   const { mutate } = useSWRConfig();
+  const [isRAGmode, setRAGmode] = useState<boolean>(false);
   const todayStr = "1999-01-01";//new Date().toLocaleDateString('en-CA')
   const CompleteInitialier = useCallback(() => {
     if (chatTopicData) {
@@ -140,6 +141,7 @@ export function Chat({
       mutate('/api/history');
     },
     onError: (error) => {
+      console.dir(error)
       toast.error('An error occured, please try again!');
     },
   });
@@ -153,7 +155,11 @@ export function Chat({
   const isBlockVisible = useBlockSelector((state) => state.isVisible);
 
   return (
-    <ChatContext.Provider value={{ topicInputValues, setTopicInputValues, isTopicInputComplete, setIsTopicInputComplete }}>
+    <ChatContext.Provider value={{
+      topicInputValues, setTopicInputValues,
+      isTopicInputComplete, setIsTopicInputComplete,
+      isRAGmode, setRAGmode
+    }}>
       <div className="flex flex-col min-w-0 h-dvh bg-background">
         <ChatHeader
           chatId={id}

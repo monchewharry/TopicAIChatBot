@@ -1,9 +1,9 @@
 import { put } from '@vercel/blob';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-
 import { auth } from '@/app/(auth)/auth';
-
+import { createResourceByBlob } from '@/lib/db/queries';
+const allowedFileTypes = ['image/png', 'image/jpeg', 'application/pdf']
 // Use Blob instead of File since File is not available in Node.js environment
 const FileSchema = z.object({
   file: z
@@ -12,8 +12,8 @@ const FileSchema = z.object({
       message: 'File size should be less than 5MB',
     })
     // Update the file type based on the kind of files you want to accept
-    .refine((file) => ['image/jpeg', 'image/png'].includes(file.type), {
-      message: 'File type should be JPEG or PNG',
+    .refine((file) => allowedFileTypes.includes(file.type), {
+      message: 'File type should be images (jpeg,png) or files (pdf)',
     }),
 });
 
@@ -31,7 +31,6 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
     const file = formData.get('file') as Blob;
-
     if (!file) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
@@ -54,6 +53,8 @@ export async function POST(request: Request) {
       const data = await put(`${filename}`, fileBuffer, {
         access: 'public',
       });
+      await createResourceByBlob(data);
+
 
       return NextResponse.json(data);
     } catch (error) {

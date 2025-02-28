@@ -126,7 +126,9 @@ function PureMultimodalInput({
     window.history.replaceState({}, '', `/chat/${chatId}`);
 
     handleSubmit(undefined, {
-      experimental_attachments: attachments,
+      experimental_attachments: attachments.filter(
+        (a) => a.contentType ? ['image/png', 'image/jpeg'].includes(a.contentType) : true
+      ),
     });
     // Reset Local Storage and Input Field on Form Submission
     setAttachments([]);
@@ -157,13 +159,14 @@ function PureMultimodalInput({
 
       if (response.ok) {
         const data = await response.json();
+        console.log("success uploaded", { blobData: data })
         const { url, pathname, contentType } = data;
-
-        return {
+        const _putBlobResult = {
           url,
           name: pathname,
           contentType: contentType,
         };
+        return _putBlobResult;
       }
       const { error } = await response.json();
       toast.error(error);
@@ -181,13 +184,14 @@ function PureMultimodalInput({
       try {
         const uploadPromises = files.map((file) => uploadFile(file));
         const uploadedAttachments = await Promise.all(uploadPromises);
-        const successfullyUploadedAttachments = uploadedAttachments.filter(
-          (attachment) => attachment !== undefined,
-        );
+        const newAttachments = uploadedAttachments
+          .filter(
+            (attachment) => attachment !== undefined
+          )
 
         setAttachments((currentAttachments) => [
           ...currentAttachments,
-          ...successfullyUploadedAttachments,
+          ...newAttachments,
         ]);
       } catch (error) {
         console.error('Error uploading files!', error);
@@ -195,7 +199,7 @@ function PureMultimodalInput({
         setUploadQueue([]);
       }
     },
-    [setAttachments],
+    [setAttachments, uploadFile],
   );
   const handleTopicInputChange = () => {
     setIsTopicInputComplete(true);
@@ -225,6 +229,7 @@ function PureMultimodalInput({
 
           {/* attachment */}
           <input
+            id="attachment"
             type="file"
             className="fixed -top-4 -left-4 size-0.5 opacity-0 pointer-events-none"
             ref={fileInputRef}

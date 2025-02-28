@@ -17,7 +17,7 @@ import {
 import { db } from '.';
 import type { BlockKind } from '@/components/block';
 import type { TopicInputs, TopicIds } from '../definitions';
-
+import type { PutBlobResult } from '@vercel/blob';
 
 export async function getUser(email: string): Promise<Array<User>> {
   try {
@@ -379,6 +379,7 @@ import {
 } from "@/lib/db/schemas/resources";
 import { generateEmbeddings } from "@/lib/ai/embedding";
 import { embeddings as embeddingsTable } from "@/lib/db/schemas/embeddings";
+import { getPdfContentFromUrl } from '../utils/fileHandler';
 
 // create content-embeddings and insert to table resources
 export const createResource = async (input: NewResourceParams) => {
@@ -404,3 +405,10 @@ export const createResource = async (input: NewResourceParams) => {
       : "Error, please try again.";
   }
 };
+
+export const createResourceByBlob = async (data: PutBlobResult) => {
+  if (data.contentType === "application/pdf") {
+    const content = await getPdfContentFromUrl(data.downloadUrl);
+    await createResource({ content });
+  }
+}

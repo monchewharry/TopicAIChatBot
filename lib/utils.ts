@@ -275,6 +275,6 @@ export function getDocumentTimestampByIndex(
   return documents[index].createdAt;
 }
 
-
-
 export const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789");
+
+
