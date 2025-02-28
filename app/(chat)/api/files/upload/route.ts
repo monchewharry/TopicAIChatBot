@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { auth } from '@/app/(auth)/auth';
 import { createResourceByBlob } from '@/lib/db/queries';
-const allowedFileTypes = ['image/png', 'image/jpeg', 'application/pdf']
+const allowedFileTypes = ['image/png', 'image/jpeg', 'application/pdf', 'text/plain', 'text/markdown']
 // Use Blob instead of File since File is not available in Node.js environment
 const FileSchema = z.object({
   file: z
@@ -31,6 +31,7 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
     const file = formData.get('file') as Blob;
+
     if (!file) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }

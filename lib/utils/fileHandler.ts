@@ -7,3 +7,8 @@ export async function getPdfContentFromUrl(url: string): Promise<string> {
     const data = await pdf(buffer);
     return data.text;
 }
+
+export async function getTextContentFromUrl(url: string): Promise<string> {
+    const response = await fetch(url);
+    return await response.text();
+}

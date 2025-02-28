@@ -379,7 +379,7 @@ import {
 } from "@/lib/db/schemas/resources";
 import { generateEmbeddings } from "@/lib/ai/embedding";
 import { embeddings as embeddingsTable } from "@/lib/db/schemas/embeddings";
-import { getPdfContentFromUrl } from '../utils/fileHandler';
+import { getPdfContentFromUrl, getTextContentFromUrl } from '../utils/fileHandler';
 
 // create content-embeddings and insert to table resources
 export const createResource = async (input: NewResourceParams) => {
@@ -407,8 +407,15 @@ export const createResource = async (input: NewResourceParams) => {
 };
 
 export const createResourceByBlob = async (data: PutBlobResult) => {
+  let content: string;
+
   if (data.contentType === "application/pdf") {
-    const content = await getPdfContentFromUrl(data.downloadUrl);
-    await createResource({ content });
+    content = await getPdfContentFromUrl(data.downloadUrl);
+  } else if (data.contentType === "text/plain" || data.contentType === "text/markdown") {
+    content = await getTextContentFromUrl(data.downloadUrl);
+  } else {
+    throw new Error("Unsupported file type");
   }
+
+  await createResource({ content });
 }

@@ -3,7 +3,6 @@ import { text, varchar, uuid, timestamp, pgTable } from "drizzle-orm/pg-core";
 import { createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 import { nanoid } from "@/lib/utils";
-import { chat } from "./schema";
 
 export const resources = pgTable("resources", {
     id: varchar("id", { length: 191 })
