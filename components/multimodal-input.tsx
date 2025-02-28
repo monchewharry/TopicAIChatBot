@@ -32,7 +32,7 @@ import { chatTopics } from '@/lib/ai/topics';
 import { TopicButtons } from '@/components/toolUI/topicButtons';
 import { SuggestedActions } from './suggested-actions';
 import equal from 'fast-deep-equal';
-
+import { nanoid } from "@/lib/utils";
 function PureMultimodalInput({
   chatId,
   input,
@@ -150,6 +150,7 @@ function PureMultimodalInput({
   const uploadFile = async (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('fileId', nanoid());
 
     try {
       const response = await fetch('/api/files/upload', {

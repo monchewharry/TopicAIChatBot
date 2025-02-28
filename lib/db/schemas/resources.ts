@@ -21,7 +21,7 @@ export const resources = pgTable("resources", {
 export const insertResourceSchema = createSelectSchema(resources)
     .extend({})
     .omit({
-        id: true,
+        // id: true,
         createdAt: true,
         updatedAt: true,
     });

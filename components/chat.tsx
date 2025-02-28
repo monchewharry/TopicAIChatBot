@@ -41,7 +41,7 @@ export function Chat({
   isReadonly: boolean;
 }) {
   const { mutate } = useSWRConfig();
-  const [isRAGmode, setRAGmode] = useState<boolean>(false);
+  const [sourceId, setSourceId] = useState<string[]>([]);
   const todayStr = "1999-01-01";//new Date().toLocaleDateString('en-CA')
   const CompleteInitialier = useCallback(() => {
     if (chatTopicData) {
@@ -158,7 +158,7 @@ export function Chat({
     <ChatContext.Provider value={{
       topicInputValues, setTopicInputValues,
       isTopicInputComplete, setIsTopicInputComplete,
-      isRAGmode, setRAGmode
+      sourceId, setSourceId
     }}>
       <div className="flex flex-col min-w-0 h-dvh bg-background">
         <ChatHeader

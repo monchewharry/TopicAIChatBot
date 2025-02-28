@@ -384,11 +384,11 @@ import { getPdfContentFromUrl, getTextContentFromUrl } from '../utils/fileHandle
 // create content-embeddings and insert to table resources
 export const createResource = async (input: NewResourceParams) => {
   try {
-    const { content } = insertResourceSchema.parse(input);
+    const { id, content } = insertResourceSchema.parse(input);
 
     const [resource] = await db
       .insert(resources)
-      .values({ content })
+      .values({ id, content })
       .returning();
 
     const embeddings = await generateEmbeddings(content);
@@ -406,7 +406,7 @@ export const createResource = async (input: NewResourceParams) => {
   }
 };
 
-export const createResourceByBlob = async (data: PutBlobResult) => {
+export const createResourceByBlob = async (fileId: string, data: PutBlobResult) => {
   let content: string;
 
   if (data.contentType === "application/pdf") {
@@ -416,6 +416,6 @@ export const createResourceByBlob = async (data: PutBlobResult) => {
   } else {
     throw new Error("Unsupported file type");
   }
-
-  await createResource({ content });
+  console.log("create resource with id", fileId)
+  await createResource({ id: fileId, content });
 }
