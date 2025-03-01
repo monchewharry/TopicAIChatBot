@@ -70,7 +70,7 @@ function PureMultimodalInput({
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { width } = useWindowSize();
-  const { topicInputValues, isTopicInputComplete, setIsTopicInputComplete, sourceId, setSourceId } = useChatContext();
+  const { topicInputValues, isTopicInputComplete, setIsTopicInputComplete, sourceIds, setSourceIds } = useChatContext();
   useEffect(() => {
     if (textareaRef.current) {
       adjustHeight();
@@ -152,7 +152,7 @@ function PureMultimodalInput({
     const newSourceId = nanoid();
     formData.append('file', file);
     formData.append('fileId', newSourceId);
-    setSourceId(prev => [...prev, newSourceId]);
+    setSourceIds(prev => [...prev, newSourceId]);
 
     try {
       const response = await fetch('/api/files/upload', {
