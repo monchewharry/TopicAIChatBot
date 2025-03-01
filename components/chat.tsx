@@ -16,7 +16,7 @@ import type { VisibilityType } from './visibility-selector';
 import { useBlockSelector } from '@/hooks/use-block';
 import { toast } from 'sonner';
 import { bySolar } from 'iztro/lib/astro';
-import { type TopicInputs, type ClientToolCallResult, TopicIds } from '@/lib/definitions';
+import { type TopicInputs, type ClientToolCallResult, type RequestBodyItem, TopicIds } from '@/lib/definitions';
 import { getAllOriginalPalacesStarsData } from '@/lib/ai/tools/topicTools/clientToolsAction'
 import { DEFAULT_CHAT_TOPIC } from '@/lib/ai/topics';
 import { ChatContext } from '@/context/chatContext';
@@ -41,7 +41,7 @@ export function Chat({
   isReadonly: boolean;
 }) {
   const { mutate } = useSWRConfig();
-  const [sourceId, setSourceId] = useState<string[]>([]);
+  const [sourceIds, setSourceIds] = useState<string[]>([]);
   const todayStr = "1999-01-01";//new Date().toLocaleDateString('en-CA')
   const CompleteInitialier = useCallback(() => {
     if (chatTopicData) {
@@ -117,7 +117,11 @@ export function Chat({
     }
     return result;
   };
-
+  // customized body part per HTTP Request
+  const chatBodyPart: Omit<RequestBodyItem, 'messages'> = {
+    id, selectedChatModel,
+    topicId: selectedTopicId, topicInputValues, sourceIds
+  };
   const {
     messages,
     setMessages,
@@ -131,7 +135,7 @@ export function Chat({
     addToolResult
   } = useChat({
     id,
-    body: { id, selectedChatModel: selectedChatModel, topicId: selectedTopicId, topicInputValues: topicInputValues }, // customized body part per HTTP Request
+    body: chatBodyPart,
     initialMessages,
     experimental_throttle: 100,
     sendExtraMessageFields: true, // send id and createdAt for each message
@@ -158,7 +162,7 @@ export function Chat({
     <ChatContext.Provider value={{
       topicInputValues, setTopicInputValues,
       isTopicInputComplete, setIsTopicInputComplete,
-      sourceId, setSourceId
+      sourceIds, setSourceIds
     }}>
       <div className="flex flex-col min-w-0 h-dvh bg-background">
         <ChatHeader

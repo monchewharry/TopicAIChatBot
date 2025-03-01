@@ -36,10 +36,11 @@ export async function POST(request: Request) {
     messages,
     selectedChatModel,
     topicId,
-    topicInputValues
+    topicInputValues,
+    sourceIds,
   }: RequestBodyItem = await request.json();
   consoleLogObject({ logType: 'request', requestMessages: messages });
-
+  console.log('rag source id in this chat', sourceIds);
   const session = await auth();
 
   if (!session || !session.user || !session.user.id) {

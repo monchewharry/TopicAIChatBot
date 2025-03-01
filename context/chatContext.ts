@@ -8,8 +8,9 @@ interface ChatContextType {
 
     isTopicInputComplete: boolean;
     setIsTopicInputComplete: Dispatch<SetStateAction<boolean>>;
-    sourceId: string[];
-    setSourceId: Dispatch<SetStateAction<string[]>>;
+
+    sourceIds: string[]; // RAG source materials' id
+    setSourceIds: Dispatch<SetStateAction<string[]>>;
 }
 
 export const ChatContext = createContext<ChatContextType | undefined>(undefined);

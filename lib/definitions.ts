@@ -95,4 +95,5 @@ export interface RequestBodyItem {
     selectedChatModel: string;
     topicId: TopicIds;
     topicInputValues: TopicInputs;
+    sourceIds: string[];
 }
