@@ -1,122 +1,99 @@
-// import { auth } from "@/app/(auth)/auth";
-// import { getChunksByFilePaths } from "@/app/db";
-// import { openai } from "@ai-sdk/openai";
-// import {
-//     cosineSimilarity,
-//     embed,
-//     LanguageModelV1Middleware,
-//     generateObject,
-//     generateText,
-// } from "ai";
-// import { z } from "zod";
-// import { wrapLanguageModel } from "ai";
+import { auth } from "@/app/(auth)/auth";
+import { findRelevantContent } from "./embedding";
+import { openai } from "@ai-sdk/openai";
+import {
+    LanguageModelV1Middleware,
+    generateObject,
+    generateText
+} from "ai";
+import { z } from "zod";
 
-// // schema for validating the custom provider metadata
-// const selectionSchema = z.object({
-//     files: z.object({
-//         selection: z.array(z.string()),
-//     }),
-// });
+// schema for validating the custom provider metadata
+const selectionSchema = z.object({
+    files: z.object({
+        selection: z.array(z.string()),
+    }),
+});
 
-// // Transforms the parameters before they are passed to the language model.
-// export const ragMiddleware: LanguageModelV1Middleware = {
-//     transformParams: async ({ params }) => {
-//         const session = await auth();
+// Transforms the parameters before they are passed to the language model.
+export const ragMiddleware: LanguageModelV1Middleware = {
+    transformParams: async ({ params }) => {
+        const session = await auth();
 
-//         if (!session) return params; // no user session
+        if (!session) return params; // no user session
 
-//         // The original parameters for the language model call. renames the extracted prompt property.
-//         const { prompt: messages, providerMetadata } = params;
+        // The original parameters for the language model call. renames the extracted prompt property.
+        const { prompt: messages, providerMetadata } = params;
 
-//         // validate the provider metadata with Zod:
-//         const { success, data } = selectionSchema.safeParse(providerMetadata);
+        // validate the provider metadata with Zod:
+        const { success, data } = selectionSchema.safeParse(providerMetadata);
 
-//         if (!success) return params; // no files selected
+        if (!success) return params;
 
-//         const selection = data.files.selection;
+        const selection = data.files.selection;
 
-//         const recentMessage = messages.pop();
+        if (selection.length == 0) return params;
 
-//         if (!recentMessage || recentMessage.role !== "user") {
-//             if (recentMessage) {
-//                 messages.push(recentMessage);
-//             }
+        const recentMessage = messages.pop();
 
-//             return params;
-//         }
+        if (!recentMessage || recentMessage.role !== "user") {
+            if (recentMessage) {
+                messages.push(recentMessage);
+            }
 
-//         const lastUserMessageContent = recentMessage.content
-//             .filter((content) => content.type === "text")
-//             .map((content) => content.text)
-//             .join("\n");
+            return params;
+        }
 
-//         // Classify the user prompt as whether it requires more context or not
-//         const { object: classification } = await generateObject({
-//             // fast model for classification:
-//             model: openai("gpt-4o-mini", { structuredOutputs: true }),
-//             output: "enum",
-//             enum: ["question", "statement", "other"],
-//             system: "classify the user message as a question, statement, or other",
-//             prompt: lastUserMessageContent,
-//         });
+        const lastUserMessageContent = recentMessage.content
+            .filter((content) => content.type === "text")
+            .map((content) => content.text)
+            .join("\n");
 
-//         // only use RAG for questions
-//         if (classification !== "question") {
-//             messages.push(recentMessage);
-//             return params;
-//         }
+        // Classify the user prompt as whether it requires more context or not
+        const { object: classification } = await generateObject({
+            // fast model for classification:
+            model: openai("gpt-4o-mini", { structuredOutputs: true }),
+            output: "enum",
+            enum: ["question", "action", "statement", "other"],
+            system: "classify the user message as a question, action, statement, or other",
+            prompt: lastUserMessageContent,
+        });
 
-//         // Use hypothetical document embeddings:
-//         const { text: hypotheticalAnswer } = await generateText({
-//             // fast model for generating hypothetical answer:
-//             model: openai("gpt-4o-mini", { structuredOutputs: true }),
-//             system: "Answer the users question:",
-//             prompt: lastUserMessageContent,
-//         });
+        // only use RAG for questions and action
+        if (!["question", "action"].includes(classification)) {
+            messages.push(recentMessage);
+            return params;
+        }
 
-//         // Embed the hypothetical answer
-//         const { embedding: hypotheticalAnswerEmbedding } = await embed({
-//             model: openai.embedding("text-embedding-3-small"),
-//             value: hypotheticalAnswer,
-//         });
+        // "Sure! Please provide the document or the main points you'd like summarized, and I'll be happy to help."
+        const { text: hypotheticalAnswer } = await generateText({
+            // fast model for generating hypothetical answer:
+            model: openai("gpt-4o-mini", { structuredOutputs: true }),
+            system: "Answer the users question:",
+            prompt: lastUserMessageContent,
+        });
 
-//         // find relevant chunks based on the selection
-//         const chunksBySelection = await getChunksByFilePaths({
-//             filePaths: selection.map((path) => `${session.user?.email}/${path}`),
-//         });
+        const topKContents = await findRelevantContent(hypotheticalAnswer, selection, 4)
 
-//         const chunksWithSimilarity = chunksBySelection.map((chunk) => ({
-//             ...chunk,
-//             similarity: cosineSimilarity(
-//                 hypotheticalAnswerEmbedding,
-//                 chunk.embedding,
-//             ),
-//         }));
+        // add the chunks to the last user message
+        messages.push({
+            role: "user",
+            content: [
+                ...recentMessage.content,
+                {
+                    type: "text",
+                    text: "Here is some relevant information that you can use to answer the question:",
+                },
+                ...topKContents.map((chunk) => ({
+                    type: "text" as const,
+                    text: chunk.content,
+                })),
+            ],
+        });
 
-//         // rank the chunks by similarity and take the top K
-//         chunksWithSimilarity.sort((a, b) => b.similarity - a.similarity);
-//         const k = 10;
-//         const topKChunks = chunksWithSimilarity.slice(0, k);
-
-//         // add the chunks to the last user message
-//         messages.push({
-//             role: "user",
-//             content: [
-//                 ...recentMessage.content,
-//                 {
-//                     type: "text",
-//                     text: "Here is some relevant information that you can use to answer the question:",
-//                 },
-//                 ...topKChunks.map((chunk) => ({
-//                     type: "text" as const,
-//                     text: chunk.content,
-//                 })),
-//             ],
-//         });
-
-//         return { ...params, prompt: messages };
-//     },
-// };
+        return { ...params, prompt: messages };
+    },
+};
 
 
 // export const customModel = wrapLanguageModel({

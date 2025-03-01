@@ -16,5 +16,5 @@ export const getInformation = tool({
   parameters: z.object({
     question: z.string().describe('the users question'),
   }),
-  execute: async ({ question }) => findRelevantContent(question),
+  // execute: async ({ question }) => findRelevantContent(question),
 })

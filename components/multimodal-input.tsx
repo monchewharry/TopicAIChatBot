@@ -21,7 +21,6 @@ import {
 import { toast } from 'sonner';
 import { useLocalStorage, useWindowSize } from 'usehooks-ts';
 
-import { sanitizeUIMessages } from '@/lib/utils';
 import { ArrowUpIcon } from '@heroicons/react/24/outline';
 import { PaperclipIcon, StopIcon } from './icons';
 import { PreviewAttachment } from './preview-attachment';
@@ -32,7 +31,7 @@ import { chatTopics } from '@/lib/ai/topics';
 import { TopicButtons } from '@/components/toolUI/topicButtons';
 import { SuggestedActions } from './suggested-actions';
 import equal from 'fast-deep-equal';
-import { nanoid } from "@/lib/utils";
+import { nanoid, sanitizeUIMessages } from "@/lib/utils";
 function PureMultimodalInput({
   chatId,
   input,
@@ -147,7 +146,7 @@ function PureMultimodalInput({
     chatId,
   ]);
 
-  const uploadFile = async (file: File) => {
+  const uploadFile = useCallback(async (file: File) => {
     const formData = new FormData();
     const newSourceId = nanoid();
     formData.append('file', file);
@@ -176,7 +175,7 @@ function PureMultimodalInput({
     } catch (error) {
       toast.error('Failed to upload file, please try again!');
     }
-  };
+  }, [setSourceIds]);
 
   const handleFileChange = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {

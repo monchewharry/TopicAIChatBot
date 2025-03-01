@@ -1,8 +1,9 @@
 import { embed, embedMany } from "ai";
-import { cosineDistance, desc, gt, sql } from "drizzle-orm";
+import { cosineDistance, desc, gt, sql, and, inArray } from "drizzle-orm";
 import { embeddings } from "../db/schemas/embeddings";
 import { db } from "../db";
 import { myProvider } from "./models";
+
 const embeddingModel = myProvider.textEmbeddingModel('small-model');
 // create chunks of resource materials
 const generateChunks = (input: string): string[] => {
@@ -32,14 +33,31 @@ export const generateEmbedding = async (value: string): Promise<number[]> => {
     return embedding;
 };
 // similarity search
-export const findRelevantContent = async (userQuery: string) => {
+export const findRelevantContent = async (userQuery: string, fileIds: string[], top: number = 4) => {
     const userQueryEmbedded = await generateEmbedding(userQuery);
+
     const similarity = sql<number>`1 - (${cosineDistance(embeddings.embedding, userQueryEmbedded)})`;
+
     const similarGuides = await db
-        .select({ name: embeddings.content, similarity })
+        .select({ content: embeddings.content, similarity })
         .from(embeddings)
-        .where(gt(similarity, 0.3))
+        .where(and(
+            gt(similarity, 0), // Filter by similarity > 0.3
+            inArray(embeddings.resourceId, fileIds) // Filter by resourceId in fileIds
+        ))
         .orderBy((t) => desc(t.similarity))
-        .limit(4);
+        .limit(top);
     return similarGuides;
 };
+
+
+export async function getChunksByFileIds({
+    fileIds,
+}: {
+    fileIds: string[];
+}) {
+    return await db
+        .select()
+        .from(embeddings)
+        .where(inArray(embeddings.resourceId, fileIds));
+}

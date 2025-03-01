@@ -2,8 +2,9 @@ import {
   createDataStreamResponse,
   smoothStream,
   streamText,
+  wrapLanguageModel
 } from 'ai';
-
+import { ragMiddleware } from '@/lib/ai/ragMiddleware';
 import { auth } from '@/app/(auth)/auth';
 import { myProvider } from '@/lib/ai/models';
 import { systemPrompt } from '@/lib/ai/prompts';
@@ -88,10 +89,18 @@ export async function POST(request: Request) {
   return createDataStreamResponse({
     execute: (dataStream) => {
       const result = streamText({
-        model: myProvider.languageModel(selectedChatModel),
+        model: wrapLanguageModel({
+          model: myProvider.languageModel(selectedChatModel),
+          middleware: ragMiddleware,
+        }),//myProvider.languageModel(selectedChatModel),
         system: systemPrompt({ selectedChatModel, topicId }),
         messages,
         maxSteps: 5,
+        experimental_providerMetadata: { // the source file's id used to limit rag range
+          files: {
+            selection: sourceIds,
+          },
+        },
         experimental_activeTools: selectedChatModel === 'chat-model-reasoning'
           ? []
           : topicId === TopicIds.numerology
