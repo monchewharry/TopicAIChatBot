@@ -74,7 +74,8 @@ export async function POST(request: Request) {
       // chat entry placeholder for the source foreign key
       await saveChat({
         id: chatId, userId: session.user.id,
-        title: "new chat start with attachment", topicId: TopicIds.general, topicInputValues: null
+        title: "new chat start with attachment",
+        topicId: TopicIds.general, topicInputValues: null
       });
       await createResourceByBlob(fileId, chatId, data);
 
