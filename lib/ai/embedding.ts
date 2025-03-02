@@ -32,6 +32,7 @@ export const generateEmbedding = async (value: string): Promise<number[]> => {
     });
     return embedding;
 };
+
 // similarity search
 export const findRelevantContent = async (userQuery: string, fileIds: string[], top: number = 4) => {
     const userQueryEmbedded = await generateEmbedding(userQuery);
@@ -49,15 +50,3 @@ export const findRelevantContent = async (userQuery: string, fileIds: string[], 
         .limit(top);
     return similarGuides;
 };
-
-
-export async function getChunksByFileIds({
-    fileIds,
-}: {
-    fileIds: string[];
-}) {
-    return await db
-        .select()
-        .from(embeddings)
-        .where(inArray(embeddings.resourceId, fileIds));
-}
