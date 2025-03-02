@@ -1,3 +1,5 @@
+'use client'
+
 import { createContext, useContext } from 'react';
 import type { Dispatch, SetStateAction } from "react";
 import type { TopicInputs } from '@/lib/definitions';
