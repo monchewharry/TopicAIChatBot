@@ -85,14 +85,14 @@ export async function POST(request: Request) {
       }],
     });
   }
-
+  const customModel = wrapLanguageModel({
+    model: myProvider.languageModel(selectedChatModel),
+    middleware: ragMiddleware,
+  });
   return createDataStreamResponse({
     execute: (dataStream) => {
       const result = streamText({
-        model: wrapLanguageModel({
-          model: myProvider.languageModel(selectedChatModel),
-          middleware: ragMiddleware,
-        }),//myProvider.languageModel(selectedChatModel),
+        model: customModel,
         system: systemPrompt({ selectedChatModel, topicId }),
         messages,
         maxSteps: 5,

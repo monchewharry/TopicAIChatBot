@@ -65,7 +65,7 @@ export const ragMiddleware: LanguageModelV1Middleware = {
             return params;
         }
 
-        // "Sure! Please provide the document or the main points you'd like summarized, and I'll be happy to help."
+        // hypothetical answer will ask for the context
         const { text: hypotheticalAnswer } = await generateText({
             // fast model for generating hypothetical answer:
             model: openai("gpt-4o-mini", { structuredOutputs: true }),
@@ -82,7 +82,7 @@ export const ragMiddleware: LanguageModelV1Middleware = {
                 ...recentMessage.content,
                 {
                     type: "text",
-                    text: "Here is some relevant information that you can use to answer the question:",
+                    text: "Here is some relevant information and content that you can use to answer the question:",
                 },
                 ...topKContents.map((chunk) => ({
                     type: "text" as const,

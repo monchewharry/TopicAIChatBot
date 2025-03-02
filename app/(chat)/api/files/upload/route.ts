@@ -2,7 +2,10 @@ import { put } from '@vercel/blob';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { auth } from '@/app/(auth)/auth';
-import { createResourceByBlob } from '@/lib/db/queries';
+import type { PutBlobResult } from '@vercel/blob';
+import { getPdfContentFromUrl, getTextContentFromUrl } from '@/lib/utils/fileHandler'
+import { createResource } from '@/lib/db/queries';
+
 const allowedFileTypes = ['image/png', 'image/jpeg', 'application/pdf', 'text/plain', 'text/markdown']
 // Use Blob instead of File since File is not available in Node.js environment
 const FileSchema = z.object({
@@ -16,6 +19,19 @@ const FileSchema = z.object({
       message: 'File type should be images (jpeg,png) or files (pdf)',
     }),
 });
+
+const createResourceByBlob = async (fileId: string, data: PutBlobResult) => {
+  let content: string;
+
+  if (data.contentType === "application/pdf") {
+    content = await getPdfContentFromUrl(data.downloadUrl);
+  } else if (data.contentType === "text/plain" || data.contentType === "text/markdown") {
+    content = await getTextContentFromUrl(data.downloadUrl);
+  } else {
+    throw new Error("Unsupported file type");
+  }
+  await createResource({ id: fileId, content });
+}
 
 export async function POST(request: Request) {
   const session = await auth();

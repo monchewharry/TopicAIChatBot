@@ -17,7 +17,15 @@ import {
 import { db } from '.';
 import type { BlockKind } from '@/components/block';
 import type { TopicInputs, TopicIds } from '../definitions';
-import type { PutBlobResult } from '@vercel/blob';
+
+import {
+  NewResourceParams,
+  insertResourceSchema,
+  resources,
+} from "@/lib/db/schemas/resources";
+import { generateEmbeddings } from "@/lib/ai/embedding";
+import { embeddings as embeddingsTable } from "@/lib/db/schemas/embeddings";
+
 
 export async function getUser(email: string): Promise<Array<User>> {
   try {
@@ -108,19 +116,7 @@ export async function getChatById({ id }: { id: string }) {
     throw error;
   }
 }
-/**
- * Save message into Table Message
- * @param param0 
- * @returns 
- */
-// export async function saveMessages({ messages }: { messages: Array<Message> }) {
-//   try {
-//     return await db.insert(message).values(messages);
-//   } catch (error) {
-//     console.error('Failed to save messages in database', error);
-//     throw error;
-//   }
-// }
+
 export async function saveMessages({ messages }: { messages: Array<DBMessage> }) {
   try {
     return await db
@@ -372,15 +368,6 @@ export async function updateChatVisiblityById({
   }
 }
 
-import {
-  NewResourceParams,
-  insertResourceSchema,
-  resources,
-} from "@/lib/db/schemas/resources";
-import { generateEmbeddings } from "@/lib/ai/embedding";
-import { embeddings as embeddingsTable } from "@/lib/db/schemas/embeddings";
-import { getPdfContentFromUrl, getTextContentFromUrl } from '../utils/fileHandler';
-
 // create content-embeddings and insert to table resources
 export const createResource = async (input: NewResourceParams) => {
   try {
@@ -406,16 +393,3 @@ export const createResource = async (input: NewResourceParams) => {
   }
 };
 
-export const createResourceByBlob = async (fileId: string, data: PutBlobResult) => {
-  let content: string;
-
-  if (data.contentType === "application/pdf") {
-    content = await getPdfContentFromUrl(data.downloadUrl);
-  } else if (data.contentType === "text/plain" || data.contentType === "text/markdown") {
-    content = await getTextContentFromUrl(data.downloadUrl);
-  } else {
-    throw new Error("Unsupported file type");
-  }
-  console.log("create resource with id-", fileId)
-  await createResource({ id: fileId, content });
-}
