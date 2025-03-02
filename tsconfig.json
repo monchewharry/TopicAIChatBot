@@ -39,6 +39,7 @@
   "exclude": [
     "_test",
     "_knowledge",
+    "_scripts",
     "node_modules"
   ]
 }
