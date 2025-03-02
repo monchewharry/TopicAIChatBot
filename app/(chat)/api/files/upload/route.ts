@@ -20,7 +20,7 @@ const FileSchema = z.object({
     }),
 });
 
-const createResourceByBlob = async (fileId: string, data: PutBlobResult) => {
+const createResourceByBlob = async (fileId: string, chatId: string, data: PutBlobResult) => {
   let content: string;
 
   if (data.contentType === "application/pdf") {
@@ -30,7 +30,7 @@ const createResourceByBlob = async (fileId: string, data: PutBlobResult) => {
   } else {
     throw new Error("Unsupported file type");
   }
-  await createResource({ id: fileId, content });
+  await createResource({ id: fileId, content, chatId });
 }
 
 export async function POST(request: Request) {
@@ -48,6 +48,7 @@ export async function POST(request: Request) {
     const formData = await request.formData();
     const file = formData.get('file') as Blob;
     const fileId = formData.get('fileId') as string;
+    const chatId = formData.get('chatId') as string;
     if (!file) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
@@ -70,7 +71,7 @@ export async function POST(request: Request) {
       const data = await put(`${filename}`, fileBuffer, {
         access: 'public',
       });
-      await createResourceByBlob(fileId, data);
+      await createResourceByBlob(fileId, chatId, data);
 
 
       return NextResponse.json(data);

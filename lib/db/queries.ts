@@ -14,6 +14,7 @@ import {
   message,
   vote,
 } from '@/lib/db/schemas/schema';
+
 import { db } from '.';
 import type { BlockKind } from '@/components/block';
 import type { TopicInputs, TopicIds } from '../definitions';
@@ -59,14 +60,17 @@ export async function saveChat({
   title,
   topicId,
   topicInputValues,
+
 }: {
   id: string;
   userId: string;
   title: string;
   topicId?: TopicIds;
   topicInputValues: TopicInputs
+
 }) {
   try {
+
     return await db.insert(chat).values({
       id,
       createdAt: new Date(),
@@ -371,11 +375,11 @@ export async function updateChatVisiblityById({
 // create content-embeddings and insert to table resources
 export const createResource = async (input: NewResourceParams) => {
   try {
-    const { id, content } = insertResourceSchema.parse(input);
+    const { id, content, chatId } = insertResourceSchema.parse(input);
 
     const [resource] = await db
       .insert(resources)
-      .values({ id, content })
+      .values({ id, content, chatId })
       .returning();
 
     const embeddings = await generateEmbeddings(content);

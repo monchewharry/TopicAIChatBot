@@ -151,6 +151,7 @@ function PureMultimodalInput({
     const newSourceId = nanoid();
     formData.append('file', file);
     formData.append('fileId', newSourceId);
+    formData.append('chatId', chatId);
     setSourceIds(prev => [...prev, newSourceId]);
 
     try {
@@ -175,7 +176,7 @@ function PureMultimodalInput({
     } catch (error) {
       toast.error('Failed to upload file, please try again!');
     }
-  }, [setSourceIds]);
+  }, [setSourceIds, chatId]);
 
   const handleFileChange = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
