@@ -30,7 +30,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
       return notFound();
     }
   }
-  const chatTopicData = chat.topicInputValues as TopicInputs;
+  const chatTopicData = chat.topicInputValues;
   console.log("chatTopicData", chatTopicData);
   const messagesFromDb = await getMessagesByChatId({
     id,
@@ -40,7 +40,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   const chatModelFromCookie = cookieStore.get('chat-model');
 
   const selectedChatModel = chatModelFromCookie?.value ?? DEFAULT_CHAT_MODEL;
-  const selectedTopicId = chatTopicData.topicId ?? DEFAULT_CHAT_TOPIC;
+  const selectedTopicId = chatTopicData?.topicId ?? DEFAULT_CHAT_TOPIC;
 
   return (
     <>
@@ -50,7 +50,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         selectedChatModel={selectedChatModel}
         selectedVisibilityType={chat.visibility}
         selectedTopicId={selectedTopicId}
-        chatTopicData={chatTopicData}
+        chatTopicData={chatTopicData ?? undefined}
         isReadonly={session?.user?.id !== chat.userId}
       />
       <DataStreamHandler id={id} />

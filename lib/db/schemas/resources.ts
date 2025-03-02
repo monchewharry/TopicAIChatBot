@@ -17,18 +17,19 @@ export const resources = pgTable("resources", {
         .default(sql`now()`),
     chatId: uuid('chatId')
         .notNull()
+        .references(() => chat.id, { onDelete: 'cascade' }),
 });
 
-// resources chat relations
-export const chatRelations = relations(chat, ({ many }) => ({
-    resources: many(resources),
-}));
-export const resourcesRelations = relations(resources, ({ one }) => ({
-    chat: one(chat, {
-        fields: [resources.chatId],
-        references: [chat.id],
-    }),
-}));
+// // resources chat relations
+// export const chatRelations = relations(chat, ({ many }) => ({
+//     resources: many(resources),
+// }));
+// export const resourcesRelations = relations(resources, ({ one }) => ({
+//     chat: one(chat, {
+//         fields: [resources.chatId],
+//         references: [chat.id],
+//     }),
+// }));
 
 // Schema for resources - used to validate API requests
 export const insertResourceSchema = createSelectSchema(resources)

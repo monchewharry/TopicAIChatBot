@@ -55,9 +55,9 @@ export async function POST(request: Request) {
   }
   // save chat
   const chat = await getChatById({ id });
-  if (!chat) {
+  if (!chat || chat.topicInputValues === null) {
     const title = await generateTitleFromUserMessage({ message: userMessage });
-    await saveChat({ id, userId: session.user.id, title, topicId, topicInputValues });
+    await saveChat({ id, userId: session.user.id, title, topicId: topicId, topicInputValues: topicInputValues });
   }
 
   // save last user message
@@ -77,7 +77,7 @@ export async function POST(request: Request) {
     consoleLogObject({ logType: 'requestClientToolMsgs', clientToolMsgs: clientToolMsgs });
     await saveMessages({
       messages: [{
-        id: clientToolMsgs.revisionId ?? generateUUID(), //clientToolMsgs.id,// same as the tool-call
+        id: clientToolMsgs.revisionId ?? generateUUID(), //clientToolMsgs.id same as the tool-call
         chatId: id,
         role: "tool",
         content: clientToolMsgs.toolInvocations ?? [],

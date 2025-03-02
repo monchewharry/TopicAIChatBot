@@ -4,8 +4,8 @@ import { z } from 'zod';
 import { auth } from '@/app/(auth)/auth';
 import type { PutBlobResult } from '@vercel/blob';
 import { getPdfContentFromUrl, getTextContentFromUrl } from '@/lib/utils/fileHandler'
-import { createResource } from '@/lib/db/queries';
-
+import { createResource, saveChat } from '@/lib/db/queries';
+import { TopicIds } from '@/lib/definitions';
 const allowedFileTypes = ['image/png', 'image/jpeg', 'application/pdf', 'text/plain', 'text/markdown']
 // Use Blob instead of File since File is not available in Node.js environment
 const FileSchema = z.object({
@@ -36,8 +36,8 @@ const createResourceByBlob = async (fileId: string, chatId: string, data: PutBlo
 export async function POST(request: Request) {
   const session = await auth();
 
-  if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (!session || !session.user || !session.user.id) {
+    return new Response('Unauthorized', { status: 401 });
   }
 
   if (request.body === null) {
@@ -70,6 +70,11 @@ export async function POST(request: Request) {
     try {
       const data = await put(`${filename}`, fileBuffer, {
         access: 'public',
+      });
+      // chat entry placeholder for the source foreign key
+      await saveChat({
+        id: chatId, userId: session.user.id,
+        title: "new chat start with attachment", topicId: TopicIds.general, topicInputValues: null
       });
       await createResourceByBlob(fileId, chatId, data);
 

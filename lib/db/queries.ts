@@ -66,7 +66,7 @@ export async function saveChat({
   userId: string;
   title: string;
   topicId?: TopicIds;
-  topicInputValues: TopicInputs
+  topicInputValues: TopicInputs | null;
 
 }) {
   try {
@@ -78,6 +78,13 @@ export async function saveChat({
       title,
       topicId,
       topicInputValues
+    }).onConflictDoUpdate({
+      target: chat.id, // Specify the conflict target (the `id` column)
+      set: {
+        title: title, // Update these columns if a conflict occurs
+        topicId: topicId,
+        topicInputValues: topicInputValues,
+      },
     });
   } catch (error) {
     console.error('Failed to save chat in database');
@@ -113,7 +120,6 @@ export async function getChatsByUserId({ id }: { id: string }) {
 export async function getChatById({ id }: { id: string }) {
   try {
     const [selectedChat] = await db.select().from(chat).where(eq(chat.id, id));
-
     return selectedChat;
   } catch (error) {
     console.error('Failed to get chat by id from database');
@@ -129,7 +135,7 @@ export async function saveMessages({ messages }: { messages: Array<DBMessage> })
       .onConflictDoUpdate({
         target: message.id, // Handle conflicts on the primary key 'id'
         set: {
-          role: sql`EXCLUDED.role`,
+          role: sql`EXCLUDED.role`, // Update 'role' with the new value from the INSERT
           content: sql`EXCLUDED.content`,
         },
       });
