@@ -82,7 +82,7 @@ export const document = pgTable(
       .default('text'),
     userId: uuid('userId')
       .notNull()
-      .references(() => user.id),
+      .references(() => user.id, { onDelete: 'cascade' }),
   },
   (table) => [
     primaryKey({ columns: [table.id, table.createdAt] })
@@ -103,13 +103,13 @@ export const suggestion = pgTable(
     isResolved: boolean('isResolved').notNull().default(false),
     userId: uuid('userId')
       .notNull()
-      .references(() => user.id),
+      .references(() => user.id, { onDelete: 'cascade' }),
     createdAt: timestamp('createdAt').notNull(),
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
     foreignKey({
-      columns: [table.documentId, table.documentCreatedAt],
+      columns: [table.documentId, table.documentCreatedAt], // multicolumn foreign keys 
       foreignColumns: [document.id, document.createdAt],
     }),
   ],
