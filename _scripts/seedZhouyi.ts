@@ -1,6 +1,6 @@
 // npx tsx _scripts/seedZhouyi.ts
-import { knowledge } from "@/lib/db/schemas/knowledgeBase";
-import { TopicIds, type MarkdownSection, type ContentSection } from "@/lib/definitions";
+import { knowledge } from "../lib/db/schemas/knowledgeBase";
+import { TopicIds, type MarkdownSection, type ContentSection } from "../lib/definitions";
 import { promises as fs } from "fs";
 import path from "path";
 import postgres from 'postgres';

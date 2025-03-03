@@ -29,17 +29,17 @@
       ]
     }
   },
+  "exclude": [
+    "_test",
+    "_knowledge",
+    "_scripts/**/*",
+    "node_modules"
+  ],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
     "next.config.js"
-  ],
-  "exclude": [
-    "_test",
-    "_knowledge",
-    "_scripts",
-    "node_modules"
   ]
 }
