@@ -1,11 +1,11 @@
 // npx tsx _scripts/seedZhouyi.ts
-import { knowledge } from "../lib/db/schemas/knowledgeBase";
-import { TopicIds, type MarkdownSection, type ContentSection } from "../lib/definitions";
+import { eq } from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/postgres-js';
 import { promises as fs } from "fs";
 import path from "path";
 import postgres from 'postgres';
-import { drizzle } from 'drizzle-orm/postgres-js';
-import { eq } from 'drizzle-orm';
+import { knowledge } from "../lib/db/schemas/knowledgeBase";
+import { TopicIds, type ContentSection, type MarkdownSection } from "../lib/definitions";
 
 import { config } from 'dotenv';
 config({
