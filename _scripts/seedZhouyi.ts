@@ -1,6 +1,6 @@
 // npx tsx _scripts/seedZhouyi.ts
 import { knowledge } from "@/lib/db/schemas/knowledgeBase";
-import { TopicIds } from "@/lib/definitions";
+import { TopicIds, type MarkdownSection, type ContentSection } from "@/lib/definitions";
 import { promises as fs } from "fs";
 import path from "path";
 import postgres from 'postgres';
@@ -17,18 +17,6 @@ const client = postgres(process.env.POSTGRES_URL!, {
 });
 export const db = drizzle(client);
 const ZHOUYI_DIR = path.join(process.cwd(), "_knowledge", "zhouyi");
-
-interface ContentSection {
-  type: string;
-  content: string;
-}
-
-interface MarkdownSection {
-  title: string;
-  level: number;
-  sections: ContentSection[];
-  children: MarkdownSection[];
-}
 
 function cleanContent(content: string): string {
   return content
@@ -146,7 +134,7 @@ function parseMarkdownToHierarchy(markdown: string): MarkdownSection[] {
   return root;
 }
 
-async function readMarkdownContent(filePath: string): Promise<string> {
+async function readMarkdownContent(filePath: string): Promise<MarkdownSection[]> {
   try {
     const content = await fs.readFile(filePath, "utf-8");
 
@@ -160,11 +148,11 @@ async function readMarkdownContent(filePath: string): Promise<string> {
       .replace(/!\[.*?\]\(.*?\)/g, '')
 
     // Convert to hierarchical structure
-    const hierarchy = parseMarkdownToHierarchy(processedContent);
-    return JSON.stringify(hierarchy, null, 2);
+    const hierarchy: MarkdownSection[] = parseMarkdownToHierarchy(processedContent);
+    return hierarchy;
   } catch (error) {
     console.error(`Error reading file ${filePath}:`, error);
-    return "";
+    return [];
   }
 }
 

@@ -97,3 +97,16 @@ export interface RequestBodyItem {
     topicInputValues: TopicInputs;
     sourceIds: string[];
 }
+
+
+export interface ContentSection {
+    type: string;
+    content: string;
+}
+
+export interface MarkdownSection {
+    title: string;
+    level: number;
+    sections: ContentSection[];
+    children: MarkdownSection[];
+}
