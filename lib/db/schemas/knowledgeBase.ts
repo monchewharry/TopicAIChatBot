@@ -12,7 +12,7 @@ export const knowledge = pgTable("knowledge", {
         .default(TopicIds.general),
     tree: text("tree").notNull(), // the hierarchy tree of the knowledge content: science/math/algebra
 
-    content: json().$type<MarkdownSection[]>(),
+    content: json().$type<MarkdownSection[]>(), //json style knowledge materials parsed from markdown
     createdAt: timestamp("created_at")
         .notNull()
         .default(sql`now()`),
