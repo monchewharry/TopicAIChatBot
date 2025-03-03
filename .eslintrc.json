@@ -30,7 +30,6 @@
     }
   },
   "ignorePatterns": [
-    "**/components/ui/**",
-    "_scripts/*"
+    "**/components/ui/**"
   ]
 }
