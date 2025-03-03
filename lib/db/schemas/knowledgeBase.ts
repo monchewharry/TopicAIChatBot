@@ -1,7 +1,8 @@
 import { TopicIds } from "@/lib/definitions";
 import { nanoid } from "@/lib/utils";
 import { sql } from "drizzle-orm";
-import { index, pgTable, text, timestamp, varchar, vector } from "drizzle-orm/pg-core";
+import { index, pgTable, primaryKey, text, timestamp, varchar, vector } from "drizzle-orm/pg-core";
+
 export const knowledge = pgTable("knowledge", {
     id: varchar("id", { length: 191 })
         .primaryKey()
@@ -10,6 +11,7 @@ export const knowledge = pgTable("knowledge", {
         .notNull()
         .default(TopicIds.general),
     tree: text("tree").notNull(), // the hierarchy tree of the knowledge content: science/math/algebra
+
     content: text("content").notNull(),
     createdAt: timestamp("created_at")
         .notNull()
@@ -17,8 +19,7 @@ export const knowledge = pgTable("knowledge", {
     updatedAt: timestamp("updated_at")
         .notNull()
         .default(sql`now()`),
-});
-
+},);
 
 export const embeddings = pgTable(
     "knowledgeEmbeddings",
