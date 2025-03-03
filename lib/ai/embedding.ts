@@ -1,7 +1,7 @@
 import { embed, embedMany } from "ai";
-import { cosineDistance, desc, gt, sql, and, inArray } from "drizzle-orm";
-import { embeddings } from "../db/schemas/embeddings";
+import { and, cosineDistance, desc, gt, inArray, sql } from "drizzle-orm";
 import { db } from "../db";
+import { embeddings } from "../db/schemas/embeddings";
 import { myProvider } from "./models";
 
 const embeddingModel = myProvider.textEmbeddingModel('small-model');
