@@ -2,26 +2,28 @@
 <!-- TOC -->
 
 - [multi-modal RAG ai chatbot for Topic with tools](#multi-modal-rag-ai-chatbot-for-topic-with-tools)
-    - [Dev Note](#dev-note)
-        - [DataBase](#database)
-        - [API Routes](#api-routes)
-            - [chat](#chat)
-            - [history](#history)
-            - [vote](#vote)
-            - [document](#document)
-            - [files](#files)
-        - [Chat UI](#chat-ui)
-        - [Tool](#tool)
-            - [Client Tools](#client-tools)
-            - [Server tools](#server-tools)
-        - [RAG](#rag)
-        - [vscode editor setting](#vscode-editor-setting)
-        - [structure](#structure)
-    - [Features](#features)
-    - [Model Providers](#model-providers)
-    - [Deploy Your Own](#deploy-your-own)
-    - [Running locally](#running-locally)
+  - [Dev Note](#dev-note)
+    - [allow cross site](#allow-cross-site)
+    - [DataBase](#database)
+    - [API Routes](#api-routes)
+      - [chat](#chat)
+      - [history](#history)
+      - [vote](#vote)
+      - [document](#document)
+      - [files](#files)
+    - [Chat UI](#chat-ui)
+    - [Tool](#tool)
+      - [Client Tools](#client-tools)
+      - [Server tools](#server-tools)
+    - [RAG](#rag)
+    - [vscode editor setting](#vscode-editor-setting)
+    - [structure](#structure)
+  - [Features](#features)
+  - [Model Providers](#model-providers)
+  - [Deploy Your Own](#deploy-your-own)
+  - [Running locally](#running-locally)
 
+<!-- /TOC -->
 <!-- /TOC -->
 
 
@@ -32,6 +34,10 @@
 - [multimodal-chat](https://sdk.vercel.ai/docs/guides/multi-modal-chatbot)
 - [RAG-chat](https://github.com/vercel-labs/ai-sdk-preview-rag.git)
 - [multistep-tool demo](https://vercel.com/templates/next.js/ai-sdk-roundtrips)
+
+### allow cross site
+
+- For cookies: `cookieStore.set('chat-model', model, { secure: true, httpOnly: true, sameSite: "none" });`
 
 ### DataBase
 
