@@ -13,12 +13,12 @@ import {
 
 export async function saveChatModelAsCookie(model: string) {
   const cookieStore = await cookies();
-  cookieStore.set('chat-model', model, { secure: true, httpOnly: true });
+  cookieStore.set('chat-model', model, { secure: true, httpOnly: true, sameSite: "none" });
 }
 
 export async function saveChatTopicAsCookie(topic: string) {
   const cookieStore = await cookies();
-  cookieStore.set('chat-topic', topic, { secure: true, httpOnly: true });
+  cookieStore.set('chat-topic', topic, { secure: true, httpOnly: true, sameSite: "none" });
 }
 /**
  * A tool that generates the Chat Title
