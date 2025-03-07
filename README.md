@@ -1,20 +1,16 @@
-# multi-modal RAG ai chatbot for Topic with tools
+# multi-modal+RAG ai chatbot for Topic with tools
 <!-- TOC -->
 
-- [multi-modal RAG ai chatbot for Topic with tools](#multi-modal-rag-ai-chatbot-for-topic-with-tools)
+- [multi-modal+RAG ai chatbot for Topic with tools](#multi-modalrag-ai-chatbot-for-topic-with-tools)
   - [Dev Note](#dev-note)
+    - [domain/topic knowledge RAG](#domaintopic-knowledge-rag)
     - [DataBase](#database)
     - [API Routes](#api-routes)
       - [chat](#chat)
-      - [history](#history)
-      - [vote](#vote)
-      - [document](#document)
-      - [files](#files)
     - [Chat UI](#chat-ui)
     - [Tool](#tool)
-      - [Client Tools](#client-tools)
+      - [Client Tools inspired by those authors](#client-tools-inspired-by-those-authors)
       - [Server tools](#server-tools)
-    - [RAG](#rag)
     - [vscode editor setting](#vscode-editor-setting)
     - [structure](#structure)
   - [Features](#features)
@@ -23,16 +19,18 @@
   - [Running locally](#running-locally)
 
 <!-- /TOC -->
-<!-- /TOC -->
-
 
 ## Dev Note  
 
-- [Template nextjs-ai-chatbot](https://vercel.com/templates/next.js/nextjs-ai-chatbot)
-- [ai-sdk doc](https://sdk.vercel.ai/docs/introduction)
-- [multimodal-chat](https://sdk.vercel.ai/docs/guides/multi-modal-chatbot)
-- [RAG-chat](https://github.com/vercel-labs/ai-sdk-preview-rag.git)
-- [multistep-tool demo](https://vercel.com/templates/next.js/ai-sdk-roundtrips)
+### domain/topic knowledge RAG
+
+- resources
+  - user chat attachment 
+  - database domain/topic knowledge base
+- indexing
+  - from RAW markdown to JSON. (`_scripts`)
+  - leverage obsidian community plugin dataviewjs
+  - embedding database storage (postgres vector plugin)
 
 ### DataBase
 
@@ -42,26 +40,23 @@
   - Request message: user message, client tool result,
 
 > [!NOTE] 
-> Update existing Table
-> 1. update `schema.ts`
-> 2. run `pnpm db:generate`
-> 3. run `pnpm db:push`
-
-
-> [!NOTE] 
 > Save Client side Tool's result message from request message
 > The client side tool's `tool-call` is in assistant response message, while `too-result` will be in the next assistant request message if user send more questions upon the tool's result.  
 > And message id are the same for the two assistant message (`onToolCall`). So when saving the two message to the database, we need to generate a new message id for the `tool-result`.
 
 ### API Routes
 
-- Request for `steamText()` at `\app\(chat)\api\chat`
+- Request/Response for `steamText()` at `\app\(chat)\api\chat`
+  - update chat saving logic to include topic metadata
+- Sent attachment along with message at `\app\(chat)\api\files\upload` and store the file in Blob Store (Only images and not RAG).
+  - expand `allowedFileTypes` to include document attachment as user end RAG resource.
 
+Not touched:  
 - get Chats By UserId at `\app\(chat)\api\history`
 - user rating at `\app\(chat)\api\vote`
 - Block Document at `\app\(chat)\api\document`
 
-- Sent attachment along with message at `\app\(chat)\api\files` and store the file in Blob Store (Only images and not RAG).
+
 
 #### chat
 
@@ -70,18 +65,6 @@
 > [!NOTE] 
 > sendExtraMessageFields
 > when enable `sendExtraMessageFields: true` in `useChat`, extra fields like `id`, `createdAt` will be added to the `message`. Especially, the assistant role message might be added with the `revisionId`.
-
-#### history
-
-
-
-#### vote
-
-
-#### document
-
-#### files
-
 
 ### Chat UI
 
@@ -149,7 +132,7 @@ async function onToolCall(
 };
 ```
 
-#### Client Tools
+#### Client Tools inspired by those authors
 
 - bazi feature
   - [lunar-lite](https://github.com/SylarLong/lunar-lite.git) 
@@ -168,12 +151,6 @@ async function onToolCall(
 - coding
 - document editing
 
-
-### RAG
-
-
-
-
 ### vscode editor setting
 
 ```json
@@ -190,6 +167,8 @@ async function onToolCall(
 
 `tree -L 4 --gitignore`
 
+---
+Following is from the original template's README.
 
 ## Features
 
