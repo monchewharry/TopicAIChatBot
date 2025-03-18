@@ -27,7 +27,7 @@ export default function Page() {
     if (state.status === 'user_exists') {
       toast.error('Account already exists');
     } else if (state.status === 'failed') {
-      toast.error('Failed to create account');
+      toast.error('Failed to create account. App still in development.\n Contact developer(davis.cao.public@gmail.com) to get account.');
     } else if (state.status === 'invalid_data') {
       toast.error('Failed validating your submission!');
     } else if (state.status === 'success') {
